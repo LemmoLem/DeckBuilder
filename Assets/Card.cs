@@ -40,8 +40,7 @@ public class Card : MonoBehaviour
                 if (player == gameManager.GetWhosTurn())
                 {
                     player.SetEnergy(energyCost);
-                    gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                    Debug.Log("turning off sprite renderer");
+                    gameObject.SetActive(false);
                     isPlayable = false;
                     player.discardPile.Add(this);
                     player.hand.Remove(this);
@@ -55,8 +54,7 @@ public class Card : MonoBehaviour
                 player = gameManager.GetWhosTurn();
                 player.discardPile.Add(this);
                 player.SetEnergy(energyCost);
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                Debug.Log("turning off sprite renderer");
+                gameObject.SetActive(false);
                 isPlayable = false;
                 isInDeck = true;
 

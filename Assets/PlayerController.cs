@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
             for (int i = 0; i < length; i++)
             {
                 drawPile[0].transform.position = playerArea.slots[i].position;
-                drawPile[0].GetComponent<SpriteRenderer>().enabled = true;
+                drawPile[0].gameObject.SetActive(true);
                 drawPile[0].SetPlayable(true);
                 hand.Add(drawPile[0]);
                 drawPile.RemoveAt(0);
@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 drawPile[0].transform.position = playerArea.slots[i].position;
-                drawPile[0].GetComponent<SpriteRenderer>().enabled = true;
+                drawPile[0].gameObject.SetActive(true);
                 drawPile[0].SetPlayable(true);
                 hand.Add(drawPile[0]);
                 drawPile.RemoveAt(0);
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log(drawPile.Count);
                 drawPile[0].transform.position = playerArea.slots[hand.Count].position;
-                drawPile[0].GetComponent<SpriteRenderer>().enabled = true;
+                drawPile[0].gameObject.SetActive(true);
                 drawPile[0].SetPlayable(true);
                 hand.Add(drawPile[0]);
                 drawPile.RemoveAt(0);
@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
         for (int i =0; i < hand.Count; i++)
         {
             hand[i].SetPlayable(false);
-            hand[i].GetComponent<SpriteRenderer>().enabled = false;
+            hand[i].gameObject.SetActive(false);
         }
         discardPile.AddRange(hand);
         hand.Clear();

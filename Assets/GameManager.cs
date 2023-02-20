@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                i think i fixed the problem i had - issue with decks bigger than 5 with drawing cards not knowing what to do    
+                i think i fixed the problem i had - issue with decks bigger than 5 with drawing cards not knowing what to do   
+                so cards that have sprite renderer disabled are still hovering over where new cards go so need to just straight up disable them 
+                i think that will solve it
 
        NEXT UP: Cards actually do something, different type of cards. attack card, shield card etc
 
