@@ -14,6 +14,9 @@ public class Card : MonoBehaviour
     int shield;
     private GameManager gameManager;
     PlayerController player;
+    PlayerController opponent;
+    public enum CardType { Attack, Armor, Energy};
+    public CardType cardType;
 
     // Start is called before the first frame update
     void Start()
@@ -37,13 +40,29 @@ public class Card : MonoBehaviour
             if (isInDeck)
             {
                 //this if should check if the player of the card and whether its their turn
+                //when cards become in deck they get a player so this works
                 if (player == gameManager.GetWhosTurn())
                 {
-                    player.SetEnergy(energyCost);
+                    player.ChangeEnergy(energyCost);
                     gameObject.SetActive(false);
                     isPlayable = false;
                     player.discardPile.Add(this);
                     player.hand.Remove(this);
+                    switch (cardType)
+                        {
+                        case CardType.Attack:
+                        //have to make it so considers armor and everything
+                            opponent.ChangeHealth(-1);
+                            break;
+                        case CardType.Armor:
+                            player.ChangeShields(1);
+                            break;
+                        case CardType.Energy:
+                            player.ChangeEnergy(2);
+                            break;
+
+                        }
+
                 }
                
 
@@ -52,8 +71,9 @@ public class Card : MonoBehaviour
             {
                 //check whos turn and add it to discard pile. card is being collected from river. gotta remove self from river as well
                 player = gameManager.GetWhosTurn();
+                opponent = gameManager.GetWhosNotsTurn();
                 player.discardPile.Add(this);
-                player.SetEnergy(energyCost);
+                player.ChangeEnergy(energyCost);
                 gameObject.SetActive(false);
                 isPlayable = false;
                 isInDeck = true;

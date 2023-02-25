@@ -149,11 +149,15 @@ public class PlayerController : MonoBehaviour
     {
         return health;
     }
+    public void ChangeHealth(int amount)
+    {
+        health += amount;
+    }
     public int GetEnergy()
     {
         return energy;
     }
-    public void SetEnergy(int amount)
+    public void ChangeEnergy(int amount)
     {
         energy += amount;
     }
@@ -161,9 +165,14 @@ public class PlayerController : MonoBehaviour
     {
         return strength;
     }
+
     public int GetShields()
     {
         return shields;
+    }
+    public void ChangeShields(int amount)
+    {
+        shields += amount;
     }
 
     void ClearHand()

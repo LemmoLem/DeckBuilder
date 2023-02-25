@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-                i think i fixed the problem i had - issue with decks bigger than 5 with drawing cards not knowing what to do   
-                so cards that have sprite renderer disabled are still hovering over where new cards go so need to just straight up disable them 
-                i think that will solve it
+                make it so cards do damage and that will be it 
 
        NEXT UP: Cards actually do something, different type of cards. attack card, shield card etc
 
@@ -44,6 +42,8 @@ public class GameManager : MonoBehaviour
     List<Card> riverDiscardPile = new List<Card>();
     public int riverLength;
     public Card card;
+    public Card card2;
+    public Card card3;
     public UnityEngine.UI.Text player1Text, player2Text;
     private int turnCount =1;
     // Start is called before the first frame update
@@ -71,9 +71,11 @@ public class GameManager : MonoBehaviour
 
     void FillDrawPile()
     {
-        for (int i = 0; i < riverLength; i++)
+        for (int i = 0; i < riverLength/3; i++)
         {
             riverDrawPile.Add(Instantiate(card));
+            riverDrawPile.Add(Instantiate(card2));
+            riverDrawPile.Add(Instantiate(card3));
         }
     }
 
@@ -106,6 +108,17 @@ public class GameManager : MonoBehaviour
         else
         {
             return player2;
+        }
+    }
+    public PlayerController GetWhosNotsTurn()
+    {
+        if (turnCount % 2 == 0)
+        {//even number
+            return player2;
+        }
+        else
+        {
+            return player1;
         }
     }
     public void NextTurn()
