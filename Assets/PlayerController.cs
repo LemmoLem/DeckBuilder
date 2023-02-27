@@ -197,10 +197,19 @@ public class PlayerController : MonoBehaviour
         //also will need a way for players to willingly end turn without using all their energy. end turn button i.e.
         if (energy < 1)
         {
+            //add line here to check whether the player has any cards in their hand and whether any cards in the river
             EndTurn();
             energy = baseEnergy;
             //needs to clear out hand
             
+            DrawNewHand();
+        }
+        if (gameManager.GetRiverCardLength() == 0 && hand.Count == 0)
+        {
+            EndTurn();
+            energy = baseEnergy;
+            //needs to clear out hand
+
             DrawNewHand();
         }
     }

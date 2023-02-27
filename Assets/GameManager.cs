@@ -125,4 +125,12 @@ public class GameManager : MonoBehaviour
     {
         turnCount += 1;
     }
+    public int GetRiverCardLength()
+    {
+        return riverCards.Count;
+    }
+    public void RemoveCardFromRiver(Card card)
+    {
+        riverCards.Remove(card);
+    }
 }

@@ -72,6 +72,7 @@ public class Card : MonoBehaviour
                 //check whos turn and add it to discard pile. card is being collected from river. gotta remove self from river as well
                 player = gameManager.GetWhosTurn();
                 opponent = gameManager.GetWhosNotsTurn();
+                gameManager.RemoveCardFromRiver(this);
                 player.discardPile.Add(this);
                 player.ChangeEnergy(energyCost);
                 gameObject.SetActive(false);
