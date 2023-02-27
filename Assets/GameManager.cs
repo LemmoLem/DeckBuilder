@@ -20,7 +20,7 @@ using UnityEngine;
 
     2. way to play cards
         2.1. need to click on card in the middle
-    3. stats get managed n shit
+    3. stats get managed n stuff
     4. different look for each card type
     5. shuffling and drawing cards work
     6. way to win
@@ -28,7 +28,7 @@ using UnityEngine;
 
     ways to improve:
         will have slay the spire type thing of giving opponents cards like thorns and that, unplayable curse ykno
-        Have cards in river spawned with offset with rotation and position to get messy look, could be good (could also be shite)
+        Have cards in river spawned with offset with rotation and position to get messy look, could be good (could also be stuff)
         A card that makes cards go straight to hand rather than discard pile
 
 */
