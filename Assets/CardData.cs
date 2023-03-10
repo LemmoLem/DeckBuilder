@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="NewCard", menuName = "Cards/BasicCard")]
-public class Cards : ScriptableObject
+[CreateAssetMenu(fileName ="NewCard", menuName = "CardData/BasicCard")]
+public class CardData : ScriptableObject
 {
     /* https://www.youtube.com/watch?v=aPXvoWVabPY&t=7s
     https://ldjam.com/events/ludum-dare/51/justin-time-man-of-the-hour/building-extensible-systems-with-unitys-scriptable-objects
@@ -14,16 +14,18 @@ public class Cards : ScriptableObject
     https://stackoverflow.com/questions/71512234/why-cant-i-drag-and-drop-a-sprite-in-a-scriptable-objects-inspector
     */
 
-    /*step one move card implementation to here. 
-     * get what I have working there to here. 
-     * Then implement bidding system. 
-     * then work on implementing different types of cards
+    /* so card data shouldnt replace card. it should be used by card
+     * card texts works now
+     * next work on reformating game 
+     * making card data work for different types of game cards
+     * gameplay, card data and cards
      */
     public bool isPlayable;
     public bool isInDeck;
     public int energyCost;
     public int damage;
     public int shield;
+    public string card description;
     public enum CardEffect { Attack, Armor, Energy };
     public CardEffect cardEffect;
     public Sprite cardArt;
@@ -50,7 +52,7 @@ public class Cards : ScriptableObject
     {
 
     }
-
+    /*
     void OnMouseDown()
     {
         //if card doesnt have an owner then whoever turn it is then go into that deck
@@ -103,7 +105,7 @@ public class Cards : ScriptableObject
         }
         player.CheckIfTurnOver();
     }
-
+    */
     void PlayCard()
     {
         //need way to know player n that !!!!!!!!!!!!

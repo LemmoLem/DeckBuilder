@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Card : MonoBehaviour
 {
     //so one way could handle card is that cards have an enum rather than inheriting from card parent.
     //then when trying to do action it looks at the enum type and then performs that.
-
+    public CardData carddata;
     bool isPlayable;
     bool isInDeck = false;
     int energyCost = -1;
@@ -15,20 +16,21 @@ public class Card : MonoBehaviour
     private GameManager gameManager;
     PlayerController player;
     PlayerController opponent;
-    public enum CardType { Attack, Armor, Energy};
+    public enum CardType { Attack, Armor, Energy };
     public CardType cardType;
+    public TextMeshProUGUI cardText;
 
     // Start is called before the first frame update
     void Start()
     {
         isPlayable = true;
-        gameManager = FindObjectOfType<GameManager>();  
+        gameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        DisplayText();
     }
 
     void OnMouseDown()
@@ -49,9 +51,9 @@ public class Card : MonoBehaviour
                     player.discardPile.Add(this);
                     player.hand.Remove(this);
                     switch (cardType)
-                        {
+                    {
                         case CardType.Attack:
-                        //have to make it so considers armor and everything
+                            //have to make it so considers armor and everything
                             opponent.ChangeHealth(-1);
                             break;
                         case CardType.Armor:
@@ -61,10 +63,10 @@ public class Card : MonoBehaviour
                             player.ChangeEnergy(2);
                             break;
 
-                        }
+                    }
 
                 }
-               
+
 
             }
             else
@@ -91,5 +93,11 @@ public class Card : MonoBehaviour
     public void SetPlayable(bool option)
     {
         isPlayable = option;
+    }
+
+    void DisplayText()
+    {
+        cardText.text = "energy" + carddata.energyCost;
+        
     }
 }
