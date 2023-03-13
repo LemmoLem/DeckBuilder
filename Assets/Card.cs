@@ -10,15 +10,11 @@ public class Card : MonoBehaviour
     public CardData carddata;
     bool isPlayable;
     bool isInDeck = false;
-    int energyCost = -1;
-    int damage;
-    int shield;
     private GameManager gameManager;
     PlayerController player;
     PlayerController opponent;
-    public enum CardType { Attack, Armor, Energy };
-    public CardType cardType;
     public TextMeshProUGUI cardText;
+    public TextMeshProUGUI cardDescription;
 
     // Start is called before the first frame update
     void Start()
@@ -45,24 +41,27 @@ public class Card : MonoBehaviour
                 //when cards become in deck they get a player so this works
                 if (player == gameManager.GetWhosTurn())
                 {
-                    player.ChangeEnergy(energyCost);
+                    player.ChangeEnergy(carddata.energyCost);
                     gameObject.SetActive(false);
                     isPlayable = false;
                     player.discardPile.Add(this);
                     player.hand.Remove(this);
-                    switch (cardType)
+                    switch (carddata.cardEffect)
                     {
-                        case CardType.Attack:
+                        case CardData.CardEffect.Attack:
                             //have to make it so considers armor and everything
-                            opponent.ChangeHealth(-1);
+                            opponent.ChangeHealth(carddata.statValue);
                             break;
-                        case CardType.Armor:
-                            player.ChangeShields(1);
+                        case CardData.CardEffect.Armor:
+                            player.ChangeShields(carddata.statValue);
                             break;
-                        case CardType.Energy:
-                            player.ChangeEnergy(2);
+                        case CardData.CardEffect.Energy:
+                            player.ChangeEnergy(carddata.statValue);
                             break;
-
+                        case CardData.CardEffect.AttackNArmor:
+                            opponent.ChangeHealth(carddata.values[0]);
+                            player.ChangeShields(carddata.values[1]);
+                            break;
                     }
 
                 }
@@ -76,7 +75,7 @@ public class Card : MonoBehaviour
                 opponent = gameManager.GetWhosNotsTurn();
                 gameManager.RemoveCardFromRiver(this);
                 player.discardPile.Add(this);
-                player.ChangeEnergy(energyCost);
+                player.ChangeEnergy(carddata.energyCost);
                 gameObject.SetActive(false);
                 isPlayable = false;
                 isInDeck = true;
@@ -98,6 +97,6 @@ public class Card : MonoBehaviour
     void DisplayText()
     {
         cardText.text = "energy" + carddata.energyCost;
-        
+        cardDescription.text = carddata.cardDescription;
     }
 }

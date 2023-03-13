@@ -14,19 +14,16 @@ public class CardData : ScriptableObject
     https://stackoverflow.com/questions/71512234/why-cant-i-drag-and-drop-a-sprite-in-a-scriptable-objects-inspector
     */
 
-    /* so card data shouldnt replace card. it should be used by card
-     * card texts works now
-     * next work on reformating game 
-     * making card data work for different types of game cards
-     * gameplay, card data and cards
+    /* so  different cards work. they make use of card data. what now. 
+     * either implement different card function? implement auction system?
+     * implement other game mechanics - player dying if they lose health, attacks focusing on shield first?
+     * change how river spawns cards. scriptable objects will mean can do a upgrade system
      */
-    public bool isPlayable;
-    public bool isInDeck;
     public int energyCost;
-    public int damage;
-    public int shield;
-    public string card description;
-    public enum CardEffect { Attack, Armor, Energy };
+    public int statValue;
+    public List<int> values;
+    public string cardDescription;
+    public enum CardEffect {Attack, Armor, Energy, AttackNArmor};
     public CardEffect cardEffect;
     public Sprite cardArt;
     private GameManager gameManager;
@@ -41,79 +38,7 @@ public class CardData : ScriptableObject
     
 
     // Start is called before the first frame update
-    void Start()
-    {
-        isPlayable = true;
-        gameManager = FindObjectOfType<GameManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    /*
-    void OnMouseDown()
-    {
-        //if card doesnt have an owner then whoever turn it is then go into that deck
-        //else it should look at whos deck its in and attack other player
-        if (isPlayable)
-        {
-            if (isInDeck)
-            {
-                //this if should check if the player of the card and whether its their turn
-                //when cards become in deck they get a player so this works
-                if (player == gameManager.GetWhosTurn())
-                {
-                    player.ChangeEnergy(energyCost);
-                    gameObject.SetActive(false);
-                    isPlayable = false;
-                    player.discardPile.Add(this);
-                    player.hand.Remove(this);
-                    switch (cardType)
-                    {
-                        case CardType.Attack:
-                            //have to make it so considers armor and everything
-                            opponent.ChangeHealth(-1);
-                            break;
-                        case CardType.Armor:
-                            player.ChangeShields(1);
-                            break;
-                        case CardType.Energy:
-                            player.ChangeEnergy(2);
-                            break;
-
-                    }
-
-                }
-
-
-            }
-            else
-            {
-                //check whos turn and add it to discard pile. card is being collected from river. gotta remove self from river as well
-                player = gameManager.GetWhosTurn();
-                opponent = gameManager.GetWhosNotsTurn();
-                gameManager.RemoveCardFromRiver(this);
-                player.discardPile.Add(this);
-                player.ChangeEnergy(energyCost);
-                gameObject.SetActive(false);
-                isPlayable = false;
-                isInDeck = true;
-
-            }
-        }
-        player.CheckIfTurnOver();
-    }
-    */
-    void PlayCard()
-    {
-        //need way to know player n that !!!!!!!!!!!!
-    }
-    public void SetPlayable(bool option)
-    {
-        isPlayable = option;
-    }
+    
 
 
 

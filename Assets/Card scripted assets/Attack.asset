@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
   m_Name: Attack
   m_EditorClassIdentifier: 
-  isPlayable: 0
-  isInDeck: 0
   energyCost: -1
-  damage: 4
-  shield: 1
+  statValue: -1
+  values: 
+  cardDescription: Attack card
+  cardEffect: 0
   cardArt: {fileID: 21300000, guid: ff2aa9ebc8aee604caa5f8459ac4ae43, type: 3}
