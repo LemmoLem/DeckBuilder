@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
   m_Name: BaseEnergyUp
   m_EditorClassIdentifier: 
-  energyCost: 0
-  statValue: 0
+  energyCost: -3
+  statValue: 1
   values: 
-  cardDescription: 
-  cardEffect: 0
+  cardDescription: Up Base Energy
+  cardEffect: 6
   cardArt: {fileID: 0}
