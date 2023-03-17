@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class Card : MonoBehaviour
 {
@@ -41,29 +42,42 @@ public class Card : MonoBehaviour
                 //when cards become in deck they get a player so this works
                 if (player == gameManager.GetWhosTurn())
                 {
-                    player.ChangeEnergy(carddata.energyCost);
-                    gameObject.SetActive(false);
-                    isPlayable = false;
-                    player.discardPile.Add(this);
-                    player.hand.Remove(this);
-                    switch (carddata.cardEffect)
+                    if (player.GetEnergy() >= Math.Abs(carddata.energyCost))
                     {
-                        case CardData.CardEffect.Attack:
-                            //have to make it so considers armor and everything
-                            opponent.ChangeHealth(carddata.statValue);
-                            break;
-                        case CardData.CardEffect.Armor:
-                            player.ChangeShields(carddata.statValue);
-                            break;
-                        case CardData.CardEffect.Energy:
-                            player.ChangeEnergy(carddata.statValue);
-                            break;
-                        case CardData.CardEffect.AttackNArmor:
-                            opponent.ChangeHealth(carddata.values[0]);
-                            player.ChangeShields(carddata.values[1]);
-                            break;
-                    }
 
+                        player.ChangeEnergy(carddata.energyCost);
+                        gameObject.SetActive(false);
+                        isPlayable = false;
+                        player.discardPile.Add(this);
+                        player.hand.Remove(this);
+                        switch (carddata.cardEffect)
+                        {
+                            case CardData.CardEffect.Attack:
+                                ResolveAttack(carddata.statValue);
+                                break;
+                            case CardData.CardEffect.Armor:
+                                ResolveShield(carddata.statValue);
+                                break;
+                            case CardData.CardEffect.Energy:
+                                player.ChangeEnergy(carddata.statValue);
+                                break;
+                            case CardData.CardEffect.AttackNArmor:
+                                ResolveAttack(carddata.values[0]);
+                                ResolveShield(carddata.values[1]);
+                                break;
+                            case CardData.CardEffect.StrengthUp:
+                                player.ChangeStrength(carddata.statValue);
+                                Debug.Log(carddata.statValue);
+                                break;
+                            case CardData.CardEffect.ShieldUp:
+                                player.ChangeShieldBonus(carddata.statValue);
+                                break;
+                            case CardData.CardEffect.BaseEnergyUp:
+                                player.ChangeBaseEnergy(carddata.statValue);
+                                break;
+                        }
+
+                    }
                 }
 
 
@@ -73,13 +87,15 @@ public class Card : MonoBehaviour
                 //check whos turn and add it to discard pile. card is being collected from river. gotta remove self from river as well
                 player = gameManager.GetWhosTurn();
                 opponent = gameManager.GetWhosNotsTurn();
-                gameManager.RemoveCardFromRiver(this);
-                player.discardPile.Add(this);
-                player.ChangeEnergy(carddata.energyCost);
-                gameObject.SetActive(false);
-                isPlayable = false;
-                isInDeck = true;
-
+                if (player.GetEnergy() >= Math.Abs(carddata.energyCost))
+                {
+                    gameManager.RemoveCardFromRiver(this);
+                    player.discardPile.Add(this);
+                    player.ChangeEnergy(carddata.energyCost);
+                    gameObject.SetActive(false);
+                    isPlayable = false;
+                    isInDeck = true;
+                }
             }
         }
         player.CheckIfTurnOver();
@@ -98,5 +114,14 @@ public class Card : MonoBehaviour
     {
         cardText.text = "energy" + carddata.energyCost;
         cardDescription.text = carddata.cardDescription;
+    }
+
+    void ResolveAttack(int amount)
+    {
+        opponent.ChangeHealth(amount - Math.Abs(player.GetStrength()));
+    }
+    void ResolveShield(int amount)
+    {
+        player.ChangeShields(amount + player.GetShieldBonus());
     }
 }

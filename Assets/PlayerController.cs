@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
     public int baseEnergy;
     public int strength;
     public int shields;
+    public int shieldBonus;
     public List<Card> hand = new List<Card>();
+    public int handSize;
     public List<Card> drawPile = new List<Card>();
     public List<Card> discardPile = new List<Card>();
     public PlayerArea playerArea;
@@ -23,6 +25,9 @@ public class PlayerController : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         energy = baseEnergy;
+        handSize = 5;
+        strength = 0;
+        shieldBonus = 0;
     }
 
     // Update is called once per frame
@@ -33,18 +38,16 @@ public class PlayerController : MonoBehaviour
 
     void DrawNewHand()
     {
+
         // OI THIS METHOD DOESNT MAKE SURE THAT THERE ARE ENOUGH SLOTS AAAAA
 
         //will need to update this so it works with hands with less than 5 cards. 
-        //and also need to make it so it can handle bigger hand sizes. 
-
-        // Draws card from draw pile and adds them to the player's hand
-
-        //as 5 is the amount of available slots for now do this
-        //fills deck with available cards - might not be full deck
-        if (drawPile.Count > 0 && drawPile.Count <= 5)
+        
+        if (drawPile.Count > 0 && drawPile.Count <= handSize)
         {
             int length = drawPile.Count;
+            
+            
             //wasnt sure if it would update drawpile count when it checks for loop
             for (int i = 0; i < length; i++)
             {
@@ -56,12 +59,13 @@ public class PlayerController : MonoBehaviour
                 // from blackthorn prod 
 
             }
+            
         }
         //this else is for when the amount of cards is greater than 5 which is the amount of slots
-        else if (drawPile.Count >= 5)
+        else if (drawPile.Count >= handSize)
         {
             //wasnt sure if it would update drawpile count when it checks for loop
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < handSize; i++)
             {
                 drawPile[0].transform.position = playerArea.slots[i].position;
                 drawPile[0].gameObject.SetActive(true);
@@ -72,19 +76,21 @@ public class PlayerController : MonoBehaviour
 
             }
         }
-        if (hand.Count < 5)
+        if (hand.Count < handSize)
         {
             //so if hand count is less than 5 then that means there werent enough in draw pile n so shuffling and drawing more
-            Shuffle();
-            while (hand.Count < 5)
+            if (discardPile.Count > 0)
             {
-                Debug.Log(drawPile.Count);
-                drawPile[0].transform.position = playerArea.slots[hand.Count].position;
-                drawPile[0].gameObject.SetActive(true);
-                drawPile[0].SetPlayable(true);
-                hand.Add(drawPile[0]);
-                drawPile.RemoveAt(0);
-                
+                Shuffle();
+                while (hand.Count < 5 && drawPile.Count> 0)
+                {
+                    drawPile[0].transform.position = playerArea.slots[hand.Count].position;
+                    drawPile[0].gameObject.SetActive(true);
+                    drawPile[0].SetPlayable(true);
+                    hand.Add(drawPile[0]);
+                    drawPile.RemoveAt(0);
+
+                }
             }
         }
 
@@ -93,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     void Shuffle()
     {
-        Debug.Log("got to start of shuffle");
+        //Debug.Log("got to start of shuffle");
         //add all the cards in drawpile to the discard pile 
         //- even though draw pile should be empty to initiate shuffle (just better to have check, n could be used as a feature)
         if (drawPile.Count != 0)
@@ -117,12 +123,12 @@ public class PlayerController : MonoBehaviour
             discardPile[i] = discardPile[r];
             //sets where [r] is to temp
             discardPile[r] = temp;
-            Debug.Log("Drawpile length " + drawPile.Count + " Discard pile length " + discardPile.Count);
+            //Debug.Log("Drawpile length " + drawPile.Count + " Discard pile length " + discardPile.Count);
         }
         //discard pile just got shuffled so now put it into draw pile
         drawPile.AddRange(discardPile);
         discardPile.Clear();
-        Debug.Log("Drawpile length "+ drawPile.Count + " Discard pile length " + discardPile.Count);
+       // Debug.Log("Drawpile length "+ drawPile.Count + " Discard pile length " + discardPile.Count);
     }
 
 
@@ -165,6 +171,10 @@ public class PlayerController : MonoBehaviour
     {
         return strength;
     }
+    public void ChangeStrength(int amount)
+    {
+        strength += amount;
+    }
 
     public int GetShields()
     {
@@ -173,6 +183,18 @@ public class PlayerController : MonoBehaviour
     public void ChangeShields(int amount)
     {
         shields += amount;
+    }
+    public int GetShieldBonus()
+    {
+        return shieldBonus;
+    }
+    public void ChangeShieldBonus(int amount)
+    {
+        shieldBonus += amount;
+    }
+    public void ChangeBaseEnergy(int amount)
+    {
+        baseEnergy += amount;
     }
 
     void ClearHand()
@@ -212,5 +234,6 @@ public class PlayerController : MonoBehaviour
 
             DrawNewHand();
         }
+ 
     }
 }

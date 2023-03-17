@@ -18,12 +18,14 @@ public class CardData : ScriptableObject
      * either implement different card function? implement auction system?
      * implement other game mechanics - player dying if they lose health, attacks focusing on shield first?
      * change how river spawns cards. scriptable objects will mean can do a upgrade system
+     * 
+     * so now there should be an issue if there are only two energy cards in the middle and the player doesnt have enough energy to get it
      */
     public int energyCost;
     public int statValue;
     public List<int> values;
     public string cardDescription;
-    public enum CardEffect {Attack, Armor, Energy, AttackNArmor};
+    public enum CardEffect {Attack, Armor, Energy, AttackNArmor, StrengthUp, ShieldUp, BaseEnergyUp};
     public CardEffect cardEffect;
     public Sprite cardArt;
     private GameManager gameManager;
