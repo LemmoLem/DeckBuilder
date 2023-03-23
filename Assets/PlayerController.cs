@@ -209,10 +209,12 @@ public class PlayerController : MonoBehaviour
         hand.Clear();
     }
 
-    void EndTurn()
+    public void EndTurn()
     {
         ClearHand();
         gameManager.NextTurn();
+        energy = baseEnergy;
+        DrawNewHand();
     }
     public void CheckIfTurnOver()
     {
@@ -221,19 +223,12 @@ public class PlayerController : MonoBehaviour
         {
             //add line here to check whether the player has any cards in their hand and whether any cards in the river
             EndTurn();
-            energy = baseEnergy;
-            //needs to clear out hand
-            
-            DrawNewHand();
         }
         if (gameManager.GetRiverCardLength() == 0 && hand.Count == 0)
         {
             EndTurn();
-            energy = baseEnergy;
-            //needs to clear out hand
-
-            DrawNewHand();
         }
+        // want a method that goes thru each card in the river and if theres a card which is lower 
  
     }
 }

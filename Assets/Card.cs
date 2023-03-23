@@ -75,6 +75,13 @@ public class Card : MonoBehaviour
                             case CardData.CardEffect.BaseEnergyUp:
                                 player.ChangeBaseEnergy(carddata.statValue);
                                 break;
+                            case CardData.CardEffect.Unblockable:
+                                ResolveUnblockableAttack(carddata.statValue);
+                                break;
+                            case CardData.CardEffect.SelfInflict:
+                                ResolveAttack(carddata.values[0]);
+                                ResolveSelfInflict(carddata.values[1]);
+                                break;
                         }
 
                     }
@@ -118,10 +125,52 @@ public class Card : MonoBehaviour
 
     void ResolveAttack(int amount)
     {
-        opponent.ChangeHealth(amount - Math.Abs(player.GetStrength()));
+        // takes into account opposition shield and the strength of the player
+        int trueAttack = amount - Math.Abs(player.GetStrength());
+        if (opponent.GetShields() > 0)
+        {
+            if (Math.Abs(trueAttack) > opponent.GetShields())
+            {
+                trueAttack = trueAttack + opponent.GetShields();
+                opponent.ChangeShields(opponent.GetShields());
+                opponent.ChangeHealth(trueAttack);
+            }
+            else
+            {
+                opponent.ChangeShields(trueAttack);
+            }
+        }
+        else
+        {
+            opponent.ChangeHealth(trueAttack);
+        }
     }
     void ResolveShield(int amount)
     {
         player.ChangeShields(amount + player.GetShieldBonus());
+    }
+    void ResolveUnblockableAttack(int amount)
+    {
+        opponent.ChangeHealth(amount);
+    }
+    void ResolveSelfInflict(int amount)
+    {
+        if (player.GetShields() > 0)
+        {
+            if (Math.Abs(amount) > player.GetShields())
+            {
+                amount = amount + player.GetShields();
+                player.ChangeShields(player.GetShields());
+                player.ChangeHealth(amount);
+            }
+            else
+            {
+                player.ChangeShields(amount);
+            }
+        }
+        else
+        {
+            player.ChangeHealth(amount);
+        }
     }
 }

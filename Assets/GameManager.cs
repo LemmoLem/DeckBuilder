@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 /*
                 make it so cards do damage and that will be it 
 
@@ -41,10 +41,9 @@ public class GameManager : MonoBehaviour
     List<Card> riverDrawPile = new List<Card>();
     List<Card> riverDiscardPile = new List<Card>();
     public int riverLength;
-    public Card card;
-    public Card card2;
-    public Card card3;
+    public Card card, card2, card3, card4, card5, card6;
     public UnityEngine.UI.Text player1Text, player2Text;
+    public TextMeshProUGUI gameOverText;
     private int turnCount =1;
     // Start is called before the first frame update
     void Start()
@@ -71,11 +70,14 @@ public class GameManager : MonoBehaviour
 
     void FillDrawPile()
     {
-        for (int i = 0; i < riverLength/3; i++)
+        for (int i = 0; i < riverLength/6; i++)
         {
             riverDrawPile.Add(Instantiate(card));
             riverDrawPile.Add(Instantiate(card2));
             riverDrawPile.Add(Instantiate(card3));
+            riverDrawPile.Add(Instantiate(card4));
+            riverDrawPile.Add(Instantiate(card5));
+            riverDrawPile.Add(Instantiate(card6));
         }
     }
 
@@ -89,6 +91,10 @@ public class GameManager : MonoBehaviour
         player2Text.text = "Draw Pile: " + player2.GetDrawPileLength() + "\nDiscard Pile: "
                     + player2.GetDiscardPileLength() + "\nHealth: " + player2.GetHealth() + "\nEnergy: " + player2.GetEnergy()
                     + "\nShields: " + player2.GetShields() + "\nStrength: " + player2.GetStrength();
+        if (player1.GetHealth() < 0 || player2.GetHealth() < 0)
+        {
+            gameOverText.text = "GAME OVER";
+        }
     }
 
     PlayerController GetPlayer1()
@@ -133,4 +139,6 @@ public class GameManager : MonoBehaviour
     {
         riverCards.Remove(card);
     }
+
+
 }
