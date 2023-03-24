@@ -3,27 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 /*
-                make it so cards do damage and that will be it 
+    so now remake game manager so that it can make its own card to fill the river.
+    - create new cards using carddata 
+    - so spawn river. spawn river draw pile. every 1-3 turns draw new cards to the left, shift cards to the right   
+    
+    methods to include:
+    
 
-       NEXT UP: Cards actually do something, different type of cards. attack card, shield card etc
 
-        this seems useful for implementing cards. 
-        https://gamedevbeginner.com/how-to-use-script-composition-in-unity/
-
-
-    So what do i wanna achieve for this demo.  due in two weeks
-    1. cards exist in river and player areas and lock into slot places
-        1.0.5. add in card slots for the middle and the spawning in of them - will just be copying code for shuffle and draw pile from 
-        player controller and putting it here. river instead of deck.
-        1.1. game manager spawns random selection of armor, shield and special function card    
-        1.2. will want cards to enable/disable sprite renderer when being spawned - when click on card add it to discard pile
-
-    2. way to play cards
-        2.1. need to click on card in the middle
-    3. stats get managed n stuff
-    4. different look for each card type
-    5. shuffling and drawing cards work
-    6. way to win
 
 
     ways to improve:

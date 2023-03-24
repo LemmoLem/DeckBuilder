@@ -82,6 +82,9 @@ public class Card : MonoBehaviour
                                 ResolveAttack(carddata.values[0]);
                                 ResolveSelfInflict(carddata.values[1]);
                                 break;
+                            case CardData.CardEffect.ShieldBreaker:
+                                ResolveShieldBreaker(carddata.statValue);
+                                break;
                         }
 
                     }
@@ -171,6 +174,34 @@ public class Card : MonoBehaviour
         else
         {
             player.ChangeHealth(amount);
+        }
+    }
+    void ResolveShieldBreaker(int amount)
+    {
+        // have this card say it does for each damage to shield, does one more (if they still have shields)
+
+        // so strenght shouldnt be doubled
+        // check whether the opponent has enough to firm the damage
+        // then if not get rid of all shields n leftover damage
+        if (opponent.GetShields() >= Math.Abs(amount * 2))
+        {
+            ResolveAttack(amount * 2);
+        }
+        else
+        {
+            while (opponent.GetShields() > 0 || amount < 0)
+            {
+                opponent.ChangeShields(1);
+                if (opponent.GetShields() > 0)
+                {
+                    opponent.ChangeShields(1);
+                }
+                amount = amount + 1;
+            }
+            if (amount> 0)
+            {
+                ResolveAttack(amount);
+            }
         }
     }
 }

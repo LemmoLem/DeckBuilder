@@ -5,6 +5,7 @@ using UnityEngine;
 public class River : MonoBehaviour
 {
     public int amount;
+    public Transform[] top, middle, bottom;
     public Transform[] slots;
     // Start is called before the first frame update
     void Start()

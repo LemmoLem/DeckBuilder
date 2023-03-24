@@ -24,7 +24,7 @@ public class CardData : ScriptableObject
     public int statValue;
     public List<int> values;
     public string cardDescription;
-    public enum CardEffect {Attack, Armor, Energy, AttackNArmor, StrengthUp, ShieldUp, BaseEnergyUp, Unblockable, SelfInflict};
+    public enum CardEffect {Attack, Armor, Energy, AttackNArmor, StrengthUp, ShieldUp, BaseEnergyUp, Unblockable, SelfInflict, ShieldBreaker};
     public CardEffect cardEffect;
     public Sprite cardArt;
     private GameManager gameManager;
