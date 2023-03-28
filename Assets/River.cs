@@ -7,9 +7,14 @@ public class River : MonoBehaviour
     public int amount;
     public Transform[] top, middle, bottom;
     public Transform[] slots;
+    public List<Transform[]> riverSlots = new List<Transform[]>();
+
     // Start is called before the first frame update
     void Start()
     {
+        riverSlots.Add(top);
+        riverSlots.Add(middle);
+        riverSlots.Add(bottom);
         
     }
 
@@ -17,5 +22,9 @@ public class River : MonoBehaviour
     void Update()
     {
         
+    }
+    public List<Transform[]> GetRiverSlots()
+    {
+        return riverSlots;
     }
 }

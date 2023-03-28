@@ -27,7 +27,10 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController player1, player2;
     public River river;
-    List<Card> riverCards = new List<Card>();
+    List<Card> top = new List<Card>();
+    List<Card> middle = new List<Card>();
+    List<Card> bottom = new List<Card>();
+    List<List<Card>> riverCards = new List<List<Card>>();
     List<Card> riverDrawPile = new List<Card>();
     List<Card> riverDiscardPile = new List<Card>();
     public int riverLength;
@@ -40,6 +43,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        riverCards.Add(top);
+        riverCards.Add(middle);
+        riverCards.Add(bottom);
         AddNewCardsToDrawPile(25);
         SpawnRiver();
     }
@@ -53,18 +59,28 @@ public class GameManager : MonoBehaviour
     void SpawnRiver()
     {
         // 
-        if (riverCards.Count == 0)
+        if (riverCards[0].Count == 0 && riverCards[1].Count == 0 && riverCards[2].Count == 0)
         {
-        for(int i = 0; i < riverLength; i++)
+            for (int j = 0; j < 3; j++)
+            {
+
+
+                for (int i = 0; i < 6; i++)
+
                 {
-                    riverDrawPile[0].transform.position = river.slots[i].position;
+                    
+                    riverDrawPile[0].transform.position = river.GetRiverSlots()[j][i].position;
                     riverDrawPile[0].gameObject.SetActive(true);
-                    riverCards.Add(riverDrawPile[0]);
+                    riverCards[j].Add(riverDrawPile[0]);
                     riverDrawPile.RemoveAt(0);
                 }
+            }
+
         }
         else
         {
+
+            // so if theres 3 cards in top, the last in there should be moved to the right most 
             // make so it moves cards to the right and then add cards
             // or have spawn cards script and add cards to it script
         }
@@ -147,11 +163,19 @@ public class GameManager : MonoBehaviour
     }
     public int GetRiverCardLength()
     {
+        int sum = riverCards[0].Count + riverCards[1].Count + riverCards[2].Count;
         return riverCards.Count;
     }
     public void RemoveCardFromRiver(Card card)
     {
-        riverCards.Remove(card);
+        for(int i = 0; i<3; i++)
+        {
+            if (riverCards[i].Contains(card))
+            {
+                riverCards[i].Remove(card);
+
+            }
+        }
     }
 
 

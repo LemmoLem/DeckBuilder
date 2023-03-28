@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
   m_Name: SelfInflict
   m_EditorClassIdentifier: 
-  energyCost: 4
+  energyCost: -4
   statValue: 0
-  values: 0600000002000000
+  values: fafffffffeffffff
   cardDescription: take 2 damage, opponent takes 6
   cardEffect: 8
   cardArt: {fileID: 0}
