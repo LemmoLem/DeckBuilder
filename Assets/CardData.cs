@@ -30,6 +30,7 @@ public class CardData : ScriptableObject
     private GameManager gameManager;
     PlayerController player;
     PlayerController opponent;
+    public Color cardColor;
 
     //have so image inside card design and there is description below it
     //so artwork for each but inside other sprite. this is shown in brackeys video , top link. ye

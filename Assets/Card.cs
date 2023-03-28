@@ -29,6 +29,12 @@ public class Card : MonoBehaviour
     {
         DisplayText();
     }
+    public void SetCardData(CardData data)
+    {
+        carddata = data;
+        SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
+        sprite.color = data.cardColor; 
+    }
 
     void OnMouseDown()
     {

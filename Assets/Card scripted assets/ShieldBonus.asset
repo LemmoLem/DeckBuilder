@@ -18,3 +18,4 @@ MonoBehaviour:
   cardDescription: Bonus to shield
   cardEffect: 5
   cardArt: {fileID: 0}
+  cardColor: {r: 0.32452828, g: 0.8838682, b: 1, a: 1}

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Unblockable
   m_EditorClassIdentifier: 
   energyCost: -3
-  statValue: 1
+  statValue: -1
   values: 
   cardDescription: This damage cant be blocked
   cardEffect: 7
   cardArt: {fileID: 0}
+  cardColor: {r: 0.26165894, g: 0.9433962, b: 0.26295143, a: 1}

@@ -18,3 +18,4 @@ MonoBehaviour:
   cardDescription: Gives shield
   cardEffect: 1
   cardArt: {fileID: 0}
+  cardColor: {r: 0, g: 0.054670263, b: 0.6792453, a: 1}

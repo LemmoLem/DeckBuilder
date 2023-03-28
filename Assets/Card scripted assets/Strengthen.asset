@@ -18,3 +18,4 @@ MonoBehaviour:
   cardDescription: Ups strength by one
   cardEffect: 4
   cardArt: {fileID: 0}
+  cardColor: {r: 0.41509432, g: 0.0681381, b: 0.20627986, a: 1}

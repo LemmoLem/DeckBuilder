@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
 /*
     so now remake game manager so that it can make its own card to fill the river.
     - create new cards using carddata 
@@ -9,6 +10,8 @@ using TMPro;
     
     methods to include:
     
+    1. so filling river should always work by moving cards in from the draw pile. 
+    - could make it so adds card to left most, then moves it by one and adds card to the left, like lil cool animation ting?
 
 
 
@@ -30,12 +33,14 @@ public class GameManager : MonoBehaviour
     public int riverLength;
     public Card card, card2, card3, card4, card5, card6;
     public UnityEngine.UI.Text player1Text, player2Text;
+    public Card cardPrefab;
     public TextMeshProUGUI gameOverText;
+    public List<CardData> cardDatas = new List<CardData>();
     private int turnCount =1;
     // Start is called before the first frame update
     void Start()
     {
-        FillDrawPile();
+        AddNewCardsToDrawPile(25);
         SpawnRiver();
     }
 
@@ -47,14 +52,36 @@ public class GameManager : MonoBehaviour
 
     void SpawnRiver()
     {
-        for(int i = 0; i < riverLength; i++)
+        // 
+        if (riverCards.Count == 0)
         {
-            riverDrawPile[0].transform.position = river.slots[i].position;
-            riverCards.Add(riverDrawPile[0]);
-            riverDrawPile.RemoveAt(0);
+        for(int i = 0; i < riverLength; i++)
+                {
+                    riverDrawPile[0].transform.position = river.slots[i].position;
+                    riverDrawPile[0].gameObject.SetActive(true);
+                    riverCards.Add(riverDrawPile[0]);
+                    riverDrawPile.RemoveAt(0);
+                }
+        }
+        else
+        {
+            // make so it moves cards to the right and then add cards
+            // or have spawn cards script and add cards to it script
+        }
+        
+    }
+    void AddNewCardsToDrawPile(int amount)
+    {
+        while (amount != 0) {
+            Card card = Instantiate(cardPrefab);
+            int num = UnityEngine.Random.Range(0, cardDatas.Count);
+            Debug.Log(num);
+            card.SetCardData(cardDatas[num]);
+            riverDrawPile.Add(card);
+            card.gameObject.SetActive(false);
+            amount = amount - 1;
         }
     }
-
     void FillDrawPile()
     {
         for (int i = 0; i < riverLength/6; i++)

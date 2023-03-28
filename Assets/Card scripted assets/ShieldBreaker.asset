@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
-  m_Name: SelfInflict
+  m_Name: ShieldBreaker
   m_EditorClassIdentifier: 
-  energyCost: 4
-  statValue: 0
-  values: 0600000002000000
-  cardDescription: take 2 damage, opponent takes 6
-  cardEffect: 8
+  energyCost: -3
+  statValue: -3
+  values: 
+  cardDescription: For each blocked damage deal one more
+  cardEffect: 9
   cardArt: {fileID: 0}
-  cardColor: {r: 0.65882355, g: 0.58431375, b: 0.3254902, a: 1}
+  cardColor: {r: 0.4056604, g: 0.078431375, b: 0, a: 1}

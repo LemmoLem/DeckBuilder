@@ -18,3 +18,4 @@ MonoBehaviour:
   cardDescription: Attacks and defends
   cardEffect: 3
   cardArt: {fileID: 0}
+  cardColor: {r: 0.84705883, g: 0.22745098, b: 0.15686275, a: 1}

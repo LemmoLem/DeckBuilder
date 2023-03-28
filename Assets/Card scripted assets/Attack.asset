@@ -18,3 +18,4 @@ MonoBehaviour:
   cardDescription: Attack card
   cardEffect: 0
   cardArt: {fileID: 21300000, guid: ff2aa9ebc8aee604caa5f8459ac4ae43, type: 3}
+  cardColor: {r: 1, g: 0, b: 0, a: 1}
