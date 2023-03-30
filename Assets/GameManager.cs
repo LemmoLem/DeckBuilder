@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // river cards is a list of lists. cards are added into top, middle and bottom by accesing that
         riverCards.Add(top);
         riverCards.Add(middle);
         riverCards.Add(bottom);
@@ -160,7 +161,49 @@ public class GameManager : MonoBehaviour
     public void NextTurn()
     {
         turnCount += 1;
+        if (turnCount%5 == 0)
+        {
+            MoveCardsRight();
+            AddNewCardsToDrawPile(5);
+            SpawnColumnOfCards();
+        }
+        
+        
     }
+
+    void SpawnColumnOfCards()
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if (riverCards[j].Count < 6)
+            {
+                riverDrawPile[0].transform.position = river.GetRiverSlots()[j][0].position;
+                riverDrawPile[0].gameObject.SetActive(true);
+                riverCards[j].Insert(0,riverDrawPile[0]);
+                riverDrawPile.RemoveAt(0);
+            }
+        }
+    }
+
+    void MoveCardsRight()
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            if(riverCards[j].Count < 6)
+            {
+                Debug.Log("count of row"+j+":"+ riverCards[j].Count);
+                int h = 5; 
+                for (int i = riverCards[j].Count -1; i >= 0; i--)
+                {
+                    
+                    riverCards[j][i].transform.position = river.GetRiverSlots()[j][h].position;
+                    h--;
+                }
+            }
+        }
+
+    }
+    
     public int GetRiverCardLength()
     {
         int sum = riverCards[0].Count + riverCards[1].Count + riverCards[2].Count;
