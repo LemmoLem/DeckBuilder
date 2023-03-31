@@ -4,17 +4,7 @@ using UnityEngine;
 using TMPro;
 
 /*
-    so now remake game manager so that it can make its own card to fill the river.
-    - create new cards using carddata 
-    - so spawn river. spawn river draw pile. every 1-3 turns draw new cards to the left, shift cards to the right   
     
-    methods to include:
-    
-    1. so filling river should always work by moving cards in from the draw pile. 
-    - could make it so adds card to left most, then moves it by one and adds card to the left, like lil cool animation ting?
-
-
-
 
     ways to improve:
         will have slay the spire type thing of giving opponents cards like thorns and that, unplayable curse ykno
@@ -59,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     void SpawnRiver()
     {
-        // 
+        // this method should maybe changed to be like how spawn row works n be like full of nulls
         if (riverCards[0].Count == 0 && riverCards[1].Count == 0 && riverCards[2].Count == 0)
         {
             for (int j = 0; j < 3; j++)
@@ -160,6 +150,8 @@ public class GameManager : MonoBehaviour
     }
     public void NextTurn()
     {
+        // gotta be so checks if auction turn
+
         turnCount += 1;
         if (turnCount%5 == 0)
         {

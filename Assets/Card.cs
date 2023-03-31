@@ -16,12 +16,19 @@ public class Card : MonoBehaviour
     PlayerController opponent;
     public TextMeshProUGUI cardText;
     public TextMeshProUGUI cardDescription;
+    public GameObject upbutton, downbutton;
+    public GameObject energyBidding;
+    public TextMeshProUGUI energyBidText;
+    int energyBidAmount;
 
     // Start is called before the first frame update
     void Start()
     {
         isPlayable = true;
         gameManager = FindObjectOfType<GameManager>();
+        upbutton.SetActive(false);
+        downbutton.SetActive(false);
+        energyBidding.SetActive(false);
     }
 
     // Update is called once per frame
@@ -29,6 +36,18 @@ public class Card : MonoBehaviour
     {
         DisplayText();
     }
+
+    public int GetBidEnergyAmount()
+    {
+        return energyBidAmount;
+    }
+
+    public void ChangeBidEnergyAmount(int amount)
+    {
+        energyBidAmount = energyBidAmount + amount;
+        energyBidText.text = ""+energyBidAmount;
+    }
+
     public void SetCardData(CardData data)
     {
         carddata = data;
@@ -40,6 +59,7 @@ public class Card : MonoBehaviour
     {
         //if card doesnt have an owner then whoever turn it is then go into that deck
         //else it should look at whos deck its in and attack other player
+        
         if (isPlayable)
         {
             if (isInDeck)
@@ -100,6 +120,9 @@ public class Card : MonoBehaviour
             }
             else
             {
+                upbutton.SetActive(true);
+                downbutton.SetActive(true);
+                energyBidding.SetActive(true);
                 //check whos turn and add it to discard pile. card is being collected from river. gotta remove self from river as well
                 player = gameManager.GetWhosTurn();
                 opponent = gameManager.GetWhosNotsTurn();
@@ -111,6 +134,12 @@ public class Card : MonoBehaviour
                     gameObject.SetActive(false);
                     isPlayable = false;
                     isInDeck = true;
+
+                    // when the card is bid upon the buttons n that should dissapear
+                    upbutton.SetActive(false);
+                    downbutton.SetActive(false);
+                    energyBidding.SetActive(false);
+
                 }
             }
         }
