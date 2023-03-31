@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
         while (amount != 0) {
             Card card = Instantiate(cardPrefab);
             int num = UnityEngine.Random.Range(0, cardDatas.Count);
-            Debug.Log(num);
+            //Debug.Log(num);
             card.SetCardData(cardDatas[num]);
             riverDrawPile.Add(card);
             card.gameObject.SetActive(false);
@@ -175,11 +175,11 @@ public class GameManager : MonoBehaviour
     {
         for (int j = 0; j < 3; j++)
         {
-            if (riverCards[j].Count < 6)
+            if (riverCards[j][0] == null)
             {
                 riverDrawPile[0].transform.position = river.GetRiverSlots()[j][0].position;
                 riverDrawPile[0].gameObject.SetActive(true);
-                riverCards[j].Insert(0,riverDrawPile[0]);
+                riverCards[j][0] = riverDrawPile[0];
                 riverDrawPile.RemoveAt(0);
             }
         }
@@ -187,35 +187,50 @@ public class GameManager : MonoBehaviour
 
     void MoveCardsRight()
     {
+        // should now go from right to left and check each if equal to null or not
         for (int j = 0; j < 3; j++)
         {
-            if(riverCards[j].Count < 6)
+            for (int i = riverCards[j].Count - 1; i > 0; i--)
             {
-                Debug.Log("count of row"+j+":"+ riverCards[j].Count);
-                int h = 5; 
-                for (int i = riverCards[j].Count -1; i >= 0; i--)
+                // if the card to left is null then it wont have a position so ignore it
+                if (riverCards[j][i] == null && riverCards[j][i-1] != null)
                 {
-                    
-                    riverCards[j][i].transform.position = river.GetRiverSlots()[j][h].position;
-                    h--;
+                    // swap position in list and set transform position to one to the left
+                    riverCards[j][i-1].transform.position = river.GetRiverSlots()[j][i].position;
+                    riverCards[j][i] = riverCards[j][i - 1];
+                    riverCards[j][i-1] = null;
+                    int printi = i - 1;
+
                 }
             }
+            
         }
 
     }
     
     public int GetRiverCardLength()
     {
-        int sum = riverCards[0].Count + riverCards[1].Count + riverCards[2].Count;
-        return riverCards.Count;
+        int sum = 0;
+        for (int j = 0; j < riverCards.Count; j++)
+        {
+            for (int i = 0; i < riverCards[j].Count; i++)
+            {
+                if (riverCards[j][i] != null)
+                {
+                    sum++;
+                }
+            }
+        }
+        return sum;
     }
     public void RemoveCardFromRiver(Card card)
     {
-        for(int i = 0; i<3; i++)
+        for(int i = 0; i<riverCards.Count; i++)
         {
             if (riverCards[i].Contains(card))
             {
-                riverCards[i].Remove(card);
+                int index = riverCards[i].IndexOf(card);
+                riverCards[i][index] = null;
 
             }
         }

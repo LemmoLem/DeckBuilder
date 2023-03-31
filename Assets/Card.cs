@@ -73,7 +73,7 @@ public class Card : MonoBehaviour
                                 break;
                             case CardData.CardEffect.StrengthUp:
                                 player.ChangeStrength(carddata.statValue);
-                                Debug.Log(carddata.statValue);
+                                //Debug.Log(carddata.statValue);
                                 break;
                             case CardData.CardEffect.ShieldUp:
                                 player.ChangeShieldBonus(carddata.statValue);
