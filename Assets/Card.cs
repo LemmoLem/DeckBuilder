@@ -21,6 +21,15 @@ public class Card : MonoBehaviour
     public TextMeshProUGUI energyBidText;
     int energyBidAmount;
 
+    //everywhere energybid amount is, should be changed. as well as player and opponent
+    //all get whos turns should be changed as well
+    //anywhere player and opponent is cardOwner and CardOpponent should be used
+    //get rid of energybid amount, player and opponent and go thru each and change them
+    //dont forget to actually add the npc to the in editor scene
+    PlayerController thePlayer;
+    NPCController npc;
+    PlayerController cardOwner, cardOpponent;
+    int playerBid, npcBid;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +38,7 @@ public class Card : MonoBehaviour
         SetButtonUINotActive();
 
         energyBidAmount = 0;
+        energyBidText.text = energyBidAmount.ToString();
     }
 
     // Update is called once per frame
@@ -56,6 +66,7 @@ public class Card : MonoBehaviour
     {
         gameManager.GetWhosTurn().ChangeEnergy(energyBidAmount);
         energyBidAmount = 0;
+        energyBidText.text = energyBidAmount.ToString();
         SetButtonUINotActive();
     }    
 
@@ -112,7 +123,7 @@ public class Card : MonoBehaviour
             energyBidAmount++;
         }
 
-        energyBidText.text = ""+energyBidAmount;
+        energyBidText.text = energyBidAmount.ToString();
     }
 
     public void SetCardData(CardData data)

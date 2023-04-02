@@ -31,6 +31,15 @@ public class GameManager : MonoBehaviour
     public List<CardData> cardDatas = new List<CardData>();
     private int turnCount =1;
     // Start is called before the first frame update
+
+    //get rid of player1 and player 2
+    //change turn, next turn, get whos turn all that. as turns will be at the same time
+    //card is what uses whos turn and that will no longer be a thing
+    //turns should be comprised of player choosing a set of card to get and or play
+    //
+   
+
+
     void Start()
     {
         // river cards is a list of lists. cards are added into top, middle and bottom by accesing that
