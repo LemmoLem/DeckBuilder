@@ -16,7 +16,7 @@ public class Card : MonoBehaviour
     PlayerController opponent;
     public TextMeshProUGUI cardText;
     public TextMeshProUGUI cardDescription;
-    public GameObject upbutton, downbutton;
+    public GameObject upbutton, downbutton, yesbutton, nobutton;
     public GameObject energyBidding;
     public TextMeshProUGUI energyBidText;
     int energyBidAmount;
@@ -26,15 +26,56 @@ public class Card : MonoBehaviour
     {
         isPlayable = true;
         gameManager = FindObjectOfType<GameManager>();
-        upbutton.SetActive(false);
-        downbutton.SetActive(false);
-        energyBidding.SetActive(false);
+        SetButtonUINotActive();
+
+        energyBidAmount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
         DisplayText();
+    }
+    void SetButtonUIActive()
+    {
+        upbutton.SetActive(true);
+        downbutton.SetActive(true);
+        energyBidding.SetActive(true);
+        yesbutton.SetActive(true);
+        nobutton.SetActive(true);
+    }
+    void SetButtonUINotActive()
+    {
+        upbutton.SetActive(false);
+        downbutton.SetActive(false);
+        energyBidding.SetActive(false);
+        yesbutton.SetActive(false);
+        nobutton.SetActive(false);
+    }
+    public void ExitBid()
+    {
+        gameManager.GetWhosTurn().ChangeEnergy(energyBidAmount);
+        energyBidAmount = 0;
+        SetButtonUINotActive();
+    }    
+
+    public void ConfirmBid()
+    {
+        player = gameManager.GetWhosTurn();
+        opponent = gameManager.GetWhosNotsTurn();
+        if (energyBidAmount >= Math.Abs(carddata.energyCost))
+        {
+            //dont have to remove energy from the player as thats done when assigning energy
+            gameManager.RemoveCardFromRiver(this);
+            player.discardPile.Add(this);
+            gameObject.SetActive(false);
+            isPlayable = false;
+            isInDeck = true;
+
+            // when the card is bid upon the buttons n that should dissapear
+            SetButtonUINotActive();
+
+        }
     }
 
     public int GetBidEnergyAmount()
@@ -44,7 +85,33 @@ public class Card : MonoBehaviour
 
     public void ChangeBidEnergyAmount(int amount)
     {
-        energyBidAmount = energyBidAmount + amount;
+        //energy bidding on card is 0, then goes to amount of energy for card IF the player has enough energy.
+        //this energy is pre emptively taken away from the player
+        
+        if(energyBidAmount == 0 && amount ==1 && gameManager.GetWhosTurn().GetEnergy() >= Math.Abs(carddata.energyCost))
+        {
+            gameManager.GetWhosTurn().ChangeEnergy(carddata.energyCost);
+            energyBidAmount = Math.Abs(carddata.energyCost);
+        }
+        //the minimum u can bid is energy cost of the card. so if trying to go lower then reset bid amount and give player back energy
+        else if(energyBidAmount == Math.Abs(carddata.energyCost) && amount == -1)
+        {
+            gameManager.GetWhosTurn().ChangeEnergy(Math.Abs(carddata.energyCost));
+            energyBidAmount = 0;
+        }
+        //if energybidding is above the energy cost then player can go lower. doing this way for amount of -1, means making sure not going below 0
+        else if(energyBidAmount > Math.Abs(carddata.energyCost) && amount == -1)
+        {
+            gameManager.GetWhosTurn().ChangeEnergy(1);
+            energyBidAmount--;
+        }
+        //player has bid some energy and wants to go higher, make sure player doesnt exceed how much energy they have
+        else if(energyBidAmount > 0 && gameManager.GetWhosTurn().GetEnergy() >0 && amount == 1)
+        {
+            gameManager.GetWhosTurn().ChangeEnergy(-1);
+            energyBidAmount++;
+        }
+
         energyBidText.text = ""+energyBidAmount;
     }
 
@@ -59,7 +126,7 @@ public class Card : MonoBehaviour
     {
         //if card doesnt have an owner then whoever turn it is then go into that deck
         //else it should look at whos deck its in and attack other player
-        
+
         if (isPlayable)
         {
             if (isInDeck)
@@ -120,36 +187,17 @@ public class Card : MonoBehaviour
             }
             else
             {
-                upbutton.SetActive(true);
-                downbutton.SetActive(true);
-                energyBidding.SetActive(true);
-                //check whos turn and add it to discard pile. card is being collected from river. gotta remove self from river as well
-                player = gameManager.GetWhosTurn();
-                opponent = gameManager.GetWhosNotsTurn();
-                if (player.GetEnergy() >= Math.Abs(carddata.energyCost))
-                {
-                    gameManager.RemoveCardFromRiver(this);
-                    player.discardPile.Add(this);
-                    player.ChangeEnergy(carddata.energyCost);
-                    gameObject.SetActive(false);
-                    isPlayable = false;
-                    isInDeck = true;
-
-                    // when the card is bid upon the buttons n that should dissapear
-                    upbutton.SetActive(false);
-                    downbutton.SetActive(false);
-                    energyBidding.SetActive(false);
-
-                }
+                SetButtonUIActive();
             }
         }
-        player.CheckIfTurnOver();
+        //if the card has a player check if the turn is over - will gotta change 
+        if (player != null)
+        {
+            player.CheckIfTurnOver();
+        }
     }
 
-    void PlayCard()
-    {
-        //need way to know player n that !!!!!!!!!!!!
-    }
+
     public void SetPlayable(bool option)
     {
         isPlayable = option;

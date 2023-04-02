@@ -150,8 +150,17 @@ public class GameManager : MonoBehaviour
     }
     public void NextTurn()
     {
-        // gotta be so checks if auction turn
-
+        // so go through each card, get rid of any pledged energy and add it back to the player who was bidding on that
+        for (int j = 0; j < 3; j++)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (riverCards[j][i] != null)
+                {
+                    riverCards[j][i].ExitBid();
+                }
+            }
+        }
         turnCount += 1;
         if (turnCount%5 == 0)
         {
