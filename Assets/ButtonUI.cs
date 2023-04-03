@@ -7,7 +7,7 @@ public class ButtonUI : MonoBehaviour
     public GameManager gameManager;
     public void OnButtonPress()
     {
-        gameManager.GetWhosTurn().EndTurn();
+        gameManager.NextTurn();
     }
 
     void Start()

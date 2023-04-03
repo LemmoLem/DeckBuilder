@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public List<Card> drawPile = new List<Card>();
     public List<Card> discardPile = new List<Card>();
     public PlayerArea playerArea;
-    private GameManager gameManager;
+    public GameManager gameManager;
 
     //base energy/max energy is the amount of energy the player starts each turn with
 
@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
         energy = baseEnergy;
         handSize = 5;
         strength = 0;
@@ -212,7 +211,6 @@ public class PlayerController : MonoBehaviour
     public void EndTurn()
     {
         ClearHand();
-        gameManager.NextTurn();
         energy = baseEnergy;
         DrawNewHand();
     }
@@ -230,5 +228,10 @@ public class PlayerController : MonoBehaviour
         }
         // want a method that goes thru each card in the river and if theres a card which is lower 
  
+    }
+
+    public GameManager GetGameManager()
+    {
+        return gameManager;
     }
 }

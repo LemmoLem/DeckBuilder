@@ -12,22 +12,21 @@ public class Card : MonoBehaviour
     bool isPlayable;
     bool isInDeck = false;
     private GameManager gameManager;
-    PlayerController player;
-    PlayerController opponent;
+    
     public TextMeshProUGUI cardText;
     public TextMeshProUGUI cardDescription;
-    public GameObject upbutton, downbutton, yesbutton, nobutton;
+    public GameObject upbutton, downbutton, nobutton;
     public GameObject energyBidding;
     public TextMeshProUGUI energyBidText;
-    int energyBidAmount;
+
 
     //everywhere energybid amount is, should be changed. as well as player and opponent
     //all get whos turns should be changed as well
     //anywhere player and opponent is cardOwner and CardOpponent should be used
     //get rid of energybid amount, player and opponent and go thru each and change them
     //dont forget to actually add the npc to the in editor scene
-    PlayerController thePlayer;
-    NPCController npc;
+    public PlayerController thePlayer;
+    public NPCController npc;
     PlayerController cardOwner, cardOpponent;
     int playerBid, npcBid;
     // Start is called before the first frame update
@@ -37,8 +36,11 @@ public class Card : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         SetButtonUINotActive();
 
-        energyBidAmount = 0;
-        energyBidText.text = energyBidAmount.ToString();
+        playerBid = 0;
+        npcBid = 0;
+        energyBidText.text = playerBid.ToString();
+        thePlayer = gameManager.GetThePlayer();
+        npc = gameManager.GetTheNPC();
     }
 
     // Update is called once per frame
@@ -51,7 +53,6 @@ public class Card : MonoBehaviour
         upbutton.SetActive(true);
         downbutton.SetActive(true);
         energyBidding.SetActive(true);
-        yesbutton.SetActive(true);
         nobutton.SetActive(true);
     }
     void SetButtonUINotActive()
@@ -59,39 +60,64 @@ public class Card : MonoBehaviour
         upbutton.SetActive(false);
         downbutton.SetActive(false);
         energyBidding.SetActive(false);
-        yesbutton.SetActive(false);
         nobutton.SetActive(false);
     }
     public void ExitBid()
     {
-        gameManager.GetWhosTurn().ChangeEnergy(energyBidAmount);
-        energyBidAmount = 0;
-        energyBidText.text = energyBidAmount.ToString();
+        thePlayer.ChangeEnergy(playerBid);
+        playerBid = 0;
+        energyBidText.text = playerBid.ToString();
         SetButtonUINotActive();
     }    
 
+    
     public void ConfirmBid()
     {
-        player = gameManager.GetWhosTurn();
-        opponent = gameManager.GetWhosNotsTurn();
-        if (energyBidAmount >= Math.Abs(carddata.energyCost))
+        // so as bids can only be zero or legal amount just have to check whether bigger or not
+        if (playerBid > npcBid)
         {
             //dont have to remove energy from the player as thats done when assigning energy
             gameManager.RemoveCardFromRiver(this);
-            player.discardPile.Add(this);
+            thePlayer.discardPile.Add(this);
+            cardOwner = thePlayer;
+            cardOpponent = npc;
             gameObject.SetActive(false);
             isPlayable = false;
             isInDeck = true;
 
-            // when the card is bid upon the buttons n that should dissapear
-            SetButtonUINotActive();
 
         }
+        else if (npcBid > playerBid)
+        {
+            //dont have to remove energy from the player as thats done when assigning energy
+            gameManager.RemoveCardFromRiver(this);
+            npc.discardPile.Add(this);
+            cardOwner = npc;
+            cardOpponent = thePlayer;
+            gameObject.SetActive(false);
+            isPlayable = false;
+            isInDeck = true;
+
+            
+        }
+        // when the card is bid upon the buttons n that should dissapear
+        SetButtonUINotActive();
+
     }
 
-    public int GetBidEnergyAmount()
+    public void ChangeNPCBid(int amount)
     {
-        return energyBidAmount;
+        npcBid = amount;
+        npc.ChangeEnergy(-amount);
+    }
+
+    public int GetEnergyCost()
+    {
+        return Math.Abs(carddata.energyCost);
+    }
+    public int GetNPCBid()
+    {
+        return npcBid;
     }
 
     public void ChangeBidEnergyAmount(int amount)
@@ -99,31 +125,31 @@ public class Card : MonoBehaviour
         //energy bidding on card is 0, then goes to amount of energy for card IF the player has enough energy.
         //this energy is pre emptively taken away from the player
         
-        if(energyBidAmount == 0 && amount ==1 && gameManager.GetWhosTurn().GetEnergy() >= Math.Abs(carddata.energyCost))
+        if(playerBid == 0 && amount ==1 && thePlayer.GetEnergy() >= Math.Abs(carddata.energyCost))
         {
-            gameManager.GetWhosTurn().ChangeEnergy(carddata.energyCost);
-            energyBidAmount = Math.Abs(carddata.energyCost);
+            thePlayer.ChangeEnergy(carddata.energyCost);
+            playerBid = Math.Abs(carddata.energyCost);
         }
         //the minimum u can bid is energy cost of the card. so if trying to go lower then reset bid amount and give player back energy
-        else if(energyBidAmount == Math.Abs(carddata.energyCost) && amount == -1)
+        else if(playerBid == Math.Abs(carddata.energyCost) && amount == -1)
         {
-            gameManager.GetWhosTurn().ChangeEnergy(Math.Abs(carddata.energyCost));
-            energyBidAmount = 0;
+            thePlayer.ChangeEnergy(Math.Abs(carddata.energyCost));
+            playerBid = 0;
         }
         //if energybidding is above the energy cost then player can go lower. doing this way for amount of -1, means making sure not going below 0
-        else if(energyBidAmount > Math.Abs(carddata.energyCost) && amount == -1)
+        else if(playerBid > Math.Abs(carddata.energyCost) && amount == -1)
         {
-            gameManager.GetWhosTurn().ChangeEnergy(1);
-            energyBidAmount--;
+            thePlayer.ChangeEnergy(1);
+            playerBid--;
         }
         //player has bid some energy and wants to go higher, make sure player doesnt exceed how much energy they have
-        else if(energyBidAmount > 0 && gameManager.GetWhosTurn().GetEnergy() >0 && amount == 1)
+        else if(playerBid > 0 && thePlayer.GetEnergy() >0 && amount == 1)
         {
-            gameManager.GetWhosTurn().ChangeEnergy(-1);
-            energyBidAmount++;
+            thePlayer.ChangeEnergy(-1);
+            playerBid++;
         }
 
-        energyBidText.text = energyBidAmount.ToString();
+        energyBidText.text = playerBid.ToString();
     }
 
     public void SetCardData(CardData data)
@@ -144,52 +170,15 @@ public class Card : MonoBehaviour
             {
                 //this if should check if the player of the card and whether its their turn
                 //when cards become in deck they get a player so this works
-                if (player == gameManager.GetWhosTurn())
+
+                //should check whether it is in the players hand
+                
+                if (cardOwner == thePlayer)
                 {
-                    if (player.GetEnergy() >= Math.Abs(carddata.energyCost))
+                    if (cardOwner.GetEnergy() >= Math.Abs(carddata.energyCost))
                     {
 
-                        player.ChangeEnergy(carddata.energyCost);
-                        gameObject.SetActive(false);
-                        isPlayable = false;
-                        player.discardPile.Add(this);
-                        player.hand.Remove(this);
-                        switch (carddata.cardEffect)
-                        {
-                            case CardData.CardEffect.Attack:
-                                ResolveAttack(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.Armor:
-                                ResolveShield(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.Energy:
-                                player.ChangeEnergy(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.AttackNArmor:
-                                ResolveAttack(carddata.values[0]);
-                                ResolveShield(carddata.values[1]);
-                                break;
-                            case CardData.CardEffect.StrengthUp:
-                                player.ChangeStrength(carddata.statValue);
-                                //Debug.Log(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.ShieldUp:
-                                player.ChangeShieldBonus(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.BaseEnergyUp:
-                                player.ChangeBaseEnergy(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.Unblockable:
-                                ResolveUnblockableAttack(carddata.statValue);
-                                break;
-                            case CardData.CardEffect.SelfInflict:
-                                ResolveAttack(carddata.values[0]);
-                                ResolveSelfInflict(carddata.values[1]);
-                                break;
-                            case CardData.CardEffect.ShieldBreaker:
-                                ResolveShieldBreaker(carddata.statValue);
-                                break;
-                        }
+                        PlayCard();
 
                     }
                 }
@@ -202,13 +191,60 @@ public class Card : MonoBehaviour
             }
         }
         //if the card has a player check if the turn is over - will gotta change 
-        if (player != null)
-        {
-            player.CheckIfTurnOver();
-        }
     }
 
 
+    public void PlayCard()
+    {
+
+        cardOwner.ChangeEnergy(carddata.energyCost);
+        gameObject.SetActive(false);
+        isPlayable = false;
+        cardOwner.discardPile.Add(this);
+        cardOwner.hand.Remove(this);
+        switch (carddata.cardEffect)
+        {
+            case CardData.CardEffect.Attack:
+                ResolveAttack(carddata.statValue);
+                break;
+            case CardData.CardEffect.Armor:
+                ResolveShield(carddata.statValue);
+                break;
+            case CardData.CardEffect.Energy:
+                cardOwner.ChangeEnergy(carddata.statValue);
+                break;
+            case CardData.CardEffect.AttackNArmor:
+                ResolveAttack(carddata.values[0]);
+                ResolveShield(carddata.values[1]);
+                break;
+            case CardData.CardEffect.StrengthUp:
+                cardOwner.ChangeStrength(carddata.statValue);
+                //Debug.Log(carddata.statValue);
+                break;
+            case CardData.CardEffect.ShieldUp:
+                cardOwner.ChangeShieldBonus(carddata.statValue);
+                break;
+            case CardData.CardEffect.BaseEnergyUp:
+                cardOwner.ChangeBaseEnergy(carddata.statValue);
+                break;
+            case CardData.CardEffect.Unblockable:
+                ResolveUnblockableAttack(carddata.statValue);
+                break;
+            case CardData.CardEffect.SelfInflict:
+                ResolveAttack(carddata.values[0]);
+                ResolveSelfInflict(carddata.values[1]);
+                break;
+            case CardData.CardEffect.ShieldBreaker:
+                ResolveShieldBreaker(carddata.statValue);
+                break;
+        }
+
+
+
+    }
+
+
+    
     public void SetPlayable(bool option)
     {
         isPlayable = option;
@@ -223,51 +259,51 @@ public class Card : MonoBehaviour
     void ResolveAttack(int amount)
     {
         // takes into account opposition shield and the strength of the player
-        int trueAttack = amount - Math.Abs(player.GetStrength());
-        if (opponent.GetShields() > 0)
+        int trueAttack = amount - Math.Abs(cardOwner.GetStrength());
+        if (cardOpponent.GetShields() > 0)
         {
-            if (Math.Abs(trueAttack) > opponent.GetShields())
+            if (Math.Abs(trueAttack) > cardOpponent.GetShields())
             {
-                trueAttack = trueAttack + opponent.GetShields();
-                opponent.ChangeShields(opponent.GetShields());
-                opponent.ChangeHealth(trueAttack);
+                trueAttack = trueAttack + cardOpponent.GetShields();
+                cardOpponent.ChangeShields(cardOpponent.GetShields());
+                cardOpponent.ChangeHealth(trueAttack);
             }
             else
             {
-                opponent.ChangeShields(trueAttack);
+                cardOpponent.ChangeShields(trueAttack);
             }
         }
         else
         {
-            opponent.ChangeHealth(trueAttack);
+            cardOpponent.ChangeHealth(trueAttack);
         }
     }
     void ResolveShield(int amount)
     {
-        player.ChangeShields(amount + player.GetShieldBonus());
+        cardOwner.ChangeShields(amount + cardOwner.GetShieldBonus());
     }
     void ResolveUnblockableAttack(int amount)
     {
-        opponent.ChangeHealth(amount);
+        cardOpponent.ChangeHealth(amount);
     }
     void ResolveSelfInflict(int amount)
     {
-        if (player.GetShields() > 0)
+        if (cardOwner.GetShields() > 0)
         {
-            if (Math.Abs(amount) > player.GetShields())
+            if (Math.Abs(amount) > cardOwner.GetShields())
             {
-                amount = amount + player.GetShields();
-                player.ChangeShields(player.GetShields());
-                player.ChangeHealth(amount);
+                amount = amount + cardOwner.GetShields();
+                cardOwner.ChangeShields(cardOwner.GetShields());
+                cardOwner.ChangeHealth(amount);
             }
             else
             {
-                player.ChangeShields(amount);
+                cardOwner.ChangeShields(amount);
             }
         }
         else
         {
-            player.ChangeHealth(amount);
+            cardOwner.ChangeHealth(amount);
         }
     }
     void ResolveShieldBreaker(int amount)
@@ -277,18 +313,18 @@ public class Card : MonoBehaviour
         // so strenght shouldnt be doubled
         // check whether the opponent has enough to firm the damage
         // then if not get rid of all shields n leftover damage
-        if (opponent.GetShields() >= Math.Abs(amount * 2))
+        if (cardOpponent.GetShields() >= Math.Abs(amount * 2))
         {
             ResolveAttack(amount * 2);
         }
         else
         {
-            while (opponent.GetShields() > 0 || amount < 0)
+            while (cardOpponent.GetShields() > 0 || amount < 0)
             {
-                opponent.ChangeShields(1);
-                if (opponent.GetShields() > 0)
+                cardOpponent.ChangeShields(1);
+                if (cardOpponent.GetShields() > 0)
                 {
-                    opponent.ChangeShields(1);
+                    cardOpponent.ChangeShields(1);
                 }
                 amount = amount + 1;
             }

@@ -15,7 +15,8 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public PlayerController player1, player2;
+    public PlayerController thePlayer;
+    public NPCController npc;
     public River river;
     List<Card> top = new List<Card>();
     List<Card> middle = new List<Card>();
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
     List<Card> riverDiscardPile = new List<Card>();
     public int riverLength;
     public Card card, card2, card3, card4, card5, card6;
-    public UnityEngine.UI.Text player1Text, player2Text;
+    public UnityEngine.UI.Text thePlayerText, npcText;
     public Card cardPrefab;
     public TextMeshProUGUI gameOverText;
     public List<CardData> cardDatas = new List<CardData>();
@@ -113,64 +114,46 @@ public class GameManager : MonoBehaviour
 
     void DisplayText()
     {
-        player1Text.text = "Draw Pile: " + player1.GetDrawPileLength() + "\nDiscard Pile: " 
-            + player1.GetDiscardPileLength() + "\nHealth: " + player1.GetHealth() + "\nEnergy: " + player1.GetEnergy()
-            + "\nShields: " + player1.GetShields() + "\nStrength: " + player1.GetStrength();
+        thePlayerText.text = "Draw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: " 
+            + thePlayer.GetDiscardPileLength() + "\nHealth: " + thePlayer.GetHealth() + "\nEnergy: " + thePlayer.GetEnergy()
+            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength();
 
 
-        player2Text.text = "Draw Pile: " + player2.GetDrawPileLength() + "\nDiscard Pile: "
-                    + player2.GetDiscardPileLength() + "\nHealth: " + player2.GetHealth() + "\nEnergy: " + player2.GetEnergy()
-                    + "\nShields: " + player2.GetShields() + "\nStrength: " + player2.GetStrength();
-        if (player1.GetHealth() < 0 || player2.GetHealth() < 0)
+        npcText.text = "Draw Pile: " + npc.GetDrawPileLength() + "\nDiscard Pile: "
+                    + npc.GetDiscardPileLength() + "\nHealth: " + npc.GetHealth() + "\nEnergy: " + npc.GetEnergy()
+                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength();
+        if (thePlayer.GetHealth() < 0 || npc.GetHealth() < 0)
         {
             gameOverText.text = "GAME OVER";
         }
     }
 
-    PlayerController GetPlayer1()
+    public PlayerController GetThePlayer()
     {
-        return player1;
+        return thePlayer;
     }
-    PlayerController GetPlayer2()
+    public NPCController GetTheNPC()
     {
-        return player2;
+        return npc;
     }
-    public PlayerController GetWhosTurn()
-    {
-        if (turnCount%2 == 0)
-        {//even number
-            return player1;
-        }
-        else
-        {
-            return player2;
-        }
-    }
-    public PlayerController GetWhosNotsTurn()
-    {
-        if (turnCount % 2 == 0)
-        {//even number
-            return player2;
-        }
-        else
-        {
-            return player1;
-        }
-    }
+ 
     public void NextTurn()
     {
-        // so go through each card, get rid of any pledged energy and add it back to the player who was bidding on that
+        npc.PlayTurn();
+        // so go through each card and check if bids
         for (int j = 0; j < 3; j++)
         {
             for (int i = 0; i < 6; i++)
             {
                 if (riverCards[j][i] != null)
                 {
-                    riverCards[j][i].ExitBid();
+                    riverCards[j][i].ConfirmBid();
                 }
             }
         }
-        turnCount += 1;
+        thePlayer.EndTurn();
+        npc.EndTurn();
+        turnCount++;
         if (turnCount%5 == 0)
         {
             MoveCardsRight();
@@ -246,5 +229,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public List<Card> GetRiverCards()
+    {
+        List<Card> cards = new List<Card>();
+        for (int j = 0; j < riverCards.Count; j++)
+        {
+            for (int i = 0; i < riverCards[j].Count; i++)
+            {
+                if (riverCards[j][i] != null)
+                {
+                    cards.Add(riverCards[j][i]);
+                }
+            }
+        }
+
+        return cards;
+    }
 
 }
