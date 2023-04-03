@@ -25,8 +25,7 @@ public class NPCController : PlayerController
     // Start is called before the first frame update
     void Start()
     {
-     
-
+        ChangeEnergy(baseEnergy);
 
     }
 
@@ -40,46 +39,50 @@ public class NPCController : PlayerController
     {
         //so on an npc turn they want to play cards and bid for cards
         List<Card> cards = gameManager.GetRiverCards();
-        //if no hand isnt full then use all energy filling hand
+        Debug.Log(cards.Count);
         Debug.Log(hand.Count);
-        if (hand.Count < 5)
-        {
-            int i = 0;
 
-            //maybe have to do count -1
-            while (GetEnergy() > 0 && i < 10)
+        if (cards.Count > 0) { 
+        //if no hand isnt full then use all energy filling hand
+            if (hand.Count + drawPile.Count + discardPile.Count < 15)
             {
-                var num = UnityEngine.Random.Range(0, cards.Count);
-                if (cards[num].GetNPCBid() == 0)
-                {
-                    int energyCost = cards[num].GetEnergyCost();
-                    if (energyCost < GetEnergy())
-                    {
-                        Debug.Log("im bid");
+                int i = 0;
 
-                        cards[num].ChangeNPCBid(energyCost);
+                //maybe have to do count -1
+                while (GetEnergy() > 0 && i < 10)
+                {
+                    var num = UnityEngine.Random.Range(0, cards.Count);
+                    if (cards[num].GetNPCBid() == 0)
+                    {
+                        int energyCost = cards[num].GetEnergyCost();
+                        if (energyCost < GetEnergy())
+                        {
+                            cards[num].ChangeNPCBid(energyCost);
+                        }
+                        //so if the npc cant bid on cards they add to counter, just implementation for now
+                        else
+                        {
+                            i++;    
+                        }    
                     }
-                    //so if the npc cant bid on cards they add to counter, just implementation for now
                     else
                     {
                         i++;
-                    }    
-                }
-                else
-                {
-                    i++;
-                }
+                    }
 
+                }
             }
         }
         //should play some cards as well as bid in middle
-        else
+
+        else if(hand.Count>0)
         {
             //this method should really be trying to play first random card, if can then play it, if not remove it from options
             int i = 0;
-            while(GetEnergy() > 0 && i<10)
+            
+            while(GetEnergy() > 0 && i<10 && hand.Count> 0)
             {
-                var num = UnityEngine.Random.Range(0, hand.Count);
+                var num = UnityEngine.Random.Range(0, hand.Count-1);
                 if(hand[num].GetEnergyCost()<= GetEnergy())
                 {
                     hand[num].PlayCard();
@@ -91,4 +94,7 @@ public class NPCController : PlayerController
             }
         }
     }
+
+
+
 }

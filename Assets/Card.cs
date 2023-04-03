@@ -6,29 +6,20 @@ using System;
 
 public class Card : MonoBehaviour
 {
-    //so one way could handle card is that cards have an enum rather than inheriting from card parent.
-    //then when trying to do action it looks at the enum type and then performs that.
     public CardData carddata;
     bool isPlayable;
     bool isInDeck = false;
     private GameManager gameManager;
-    
     public TextMeshProUGUI cardText;
     public TextMeshProUGUI cardDescription;
     public GameObject upbutton, downbutton, nobutton;
     public GameObject energyBidding;
     public TextMeshProUGUI energyBidText;
-
-
-    //everywhere energybid amount is, should be changed. as well as player and opponent
-    //all get whos turns should be changed as well
-    //anywhere player and opponent is cardOwner and CardOpponent should be used
-    //get rid of energybid amount, player and opponent and go thru each and change them
-    //dont forget to actually add the npc to the in editor scene
     public PlayerController thePlayer;
     public NPCController npc;
     PlayerController cardOwner, cardOpponent;
     int playerBid, npcBid;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,6 +64,7 @@ public class Card : MonoBehaviour
     
     public void ConfirmBid()
     {
+        SetButtonUINotActive();
         // so as bids can only be zero or legal amount just have to check whether bigger or not
         if (playerBid > npcBid)
         {
@@ -101,8 +93,14 @@ public class Card : MonoBehaviour
             
         }
         // when the card is bid upon the buttons n that should dissapear
-        SetButtonUINotActive();
 
+        
+        //for when bids are equal reset bids
+        else {
+            npcBid = 0;
+            playerBid = 0;
+            energyBidText.text = playerBid.ToString();
+        }
     }
 
     public void ChangeNPCBid(int amount)
@@ -319,7 +317,8 @@ public class Card : MonoBehaviour
         }
         else
         {
-            while (cardOpponent.GetShields() > 0 || amount < 0)
+            //while the opponent has shields and the attack amount is less than 0
+            while (cardOpponent.GetShields() > 0 && amount < 0)
             {
                 cardOpponent.ChangeShields(1);
                 if (cardOpponent.GetShields() > 0)
