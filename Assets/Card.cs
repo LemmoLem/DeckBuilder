@@ -11,7 +11,6 @@ public class Card : MonoBehaviour
     bool isInDeck = false;
     private GameManager gameManager;
     public TextMeshProUGUI cardText;
-    public TextMeshProUGUI cardDescription;
     public GameObject upbutton, downbutton, nobutton;
     public GameObject energyBidding;
     public TextMeshProUGUI energyBidText;
@@ -212,8 +211,12 @@ public class Card : MonoBehaviour
         isPlayable = false;
         cardOwner.discardPile.Add(this);
         cardOwner.hand.Remove(this);
+    
+
         for (int i =0; i < carddatas.Count; i++)
-        { 
+        {
+            
+
             switch (carddatas[i].cardEffect)
             {
                 case CardData.CardEffect.Attack:
@@ -257,7 +260,7 @@ public class Card : MonoBehaviour
 
     void DisplayText()
     {
-        cardText.text = "energy" + GetEnergyCost();
+        cardText.text = GetEnergyCost().ToString();
         
         
     }

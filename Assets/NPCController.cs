@@ -39,8 +39,7 @@ public class NPCController : PlayerController
     {
         //so on an npc turn they want to play cards and bid for cards
         List<Card> cards = gameManager.GetRiverCards();
-        Debug.Log(cards.Count);
-        Debug.Log(hand.Count);
+
 
         if (cards.Count > 0) { 
         //if no hand isnt full then use all energy filling hand

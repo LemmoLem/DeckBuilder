@@ -95,7 +95,6 @@ public class GameManager : MonoBehaviour
             //Debug.Log(num);
             card.AddCardData(cardDatas[num]);
             int num2 = UnityEngine.Random.Range(0, 4);
-            Debug.Log(num2);
 
             for (int i = 0; i < num2; i++)
             {
