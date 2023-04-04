@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName ="NewCard", menuName = "CardData/BasicCard")]
 public class CardData : ScriptableObject
@@ -24,9 +25,10 @@ public class CardData : ScriptableObject
     public int statValue;
     public List<int> values;
     public string cardDescription;
-    public enum CardEffect {Attack, Armor, Energy, AttackNArmor, StrengthUp, ShieldUp, BaseEnergyUp, Unblockable, SelfInflict, ShieldBreaker};
+    public enum CardEffect {Attack, Armor, Energy, StrengthUp, ShieldUp, BaseEnergyUp, Unblockable, ShieldBreaker};
     public CardEffect cardEffect;
     public Sprite cardArt;
+    public Image cardImage;
     private GameManager gameManager;
     PlayerController player;
     PlayerController opponent;

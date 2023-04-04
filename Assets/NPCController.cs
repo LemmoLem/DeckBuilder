@@ -75,14 +75,14 @@ public class NPCController : PlayerController
         }
         //should play some cards as well as bid in middle
 
-        else if(hand.Count>0)
+        if(hand.Count>0 && GetEnergy()>0)
         {
             //this method should really be trying to play first random card, if can then play it, if not remove it from options
             int i = 0;
             
             while(GetEnergy() > 0 && i<10 && hand.Count> 0)
             {
-                var num = UnityEngine.Random.Range(0, hand.Count-1);
+                var num = UnityEngine.Random.Range(0, hand.Count);
                 if(hand[num].GetEnergyCost()<= GetEnergy())
                 {
                     hand[num].PlayCard();

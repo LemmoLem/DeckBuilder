@@ -93,7 +93,16 @@ public class GameManager : MonoBehaviour
             Card card = Instantiate(cardPrefab);
             int num = UnityEngine.Random.Range(0, cardDatas.Count);
             //Debug.Log(num);
-            card.SetCardData(cardDatas[num]);
+            card.AddCardData(cardDatas[num]);
+            int num2 = UnityEngine.Random.Range(0, 4);
+            Debug.Log(num2);
+
+            for (int i = 0; i < num2; i++)
+            {
+                int num3 = UnityEngine.Random.Range(0, cardDatas.Count);
+                card.AddCardData(cardDatas[num3]);
+            }
+
             riverDrawPile.Add(card);
             card.gameObject.SetActive(false);
             amount = amount - 1;

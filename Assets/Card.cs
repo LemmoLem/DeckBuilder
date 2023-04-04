@@ -6,7 +6,7 @@ using System;
 
 public class Card : MonoBehaviour
 {
-    public CardData carddata;
+    public List<CardData> carddatas = new List<CardData>();
     bool isPlayable;
     bool isInDeck = false;
     private GameManager gameManager;
@@ -19,6 +19,8 @@ public class Card : MonoBehaviour
     public NPCController npc;
     PlayerController cardOwner, cardOpponent;
     int playerBid, npcBid;
+    public GameObject[] moduleSlots;
+    List<Sprite> cardModuleSprite = new List<Sprite>();
 
     // Start is called before the first frame update
     void Start()
@@ -111,7 +113,12 @@ public class Card : MonoBehaviour
 
     public int GetEnergyCost()
     {
-        return Math.Abs(carddata.energyCost);
+        int energySum = 0;
+        for (int i = 0; i < carddatas.Count; i++)
+        {
+            energySum += carddatas[i].energyCost;
+        }
+        return Math.Abs(energySum);
     }
     public int GetNPCBid()
     {
@@ -123,19 +130,19 @@ public class Card : MonoBehaviour
         //energy bidding on card is 0, then goes to amount of energy for card IF the player has enough energy.
         //this energy is pre emptively taken away from the player
         
-        if(playerBid == 0 && amount ==1 && thePlayer.GetEnergy() >= Math.Abs(carddata.energyCost))
+        if(playerBid == 0 && amount ==1 && thePlayer.GetEnergy() >= GetEnergyCost())
         {
-            thePlayer.ChangeEnergy(carddata.energyCost);
-            playerBid = Math.Abs(carddata.energyCost);
+            thePlayer.ChangeEnergy(-GetEnergyCost());
+            playerBid = GetEnergyCost();
         }
         //the minimum u can bid is energy cost of the card. so if trying to go lower then reset bid amount and give player back energy
-        else if(playerBid == Math.Abs(carddata.energyCost) && amount == -1)
+        else if(playerBid == GetEnergyCost() && amount == -1)
         {
-            thePlayer.ChangeEnergy(Math.Abs(carddata.energyCost));
+            thePlayer.ChangeEnergy(GetEnergyCost());
             playerBid = 0;
         }
         //if energybidding is above the energy cost then player can go lower. doing this way for amount of -1, means making sure not going below 0
-        else if(playerBid > Math.Abs(carddata.energyCost) && amount == -1)
+        else if(playerBid > GetEnergyCost() && amount == -1)
         {
             thePlayer.ChangeEnergy(1);
             playerBid--;
@@ -150,11 +157,16 @@ public class Card : MonoBehaviour
         energyBidText.text = playerBid.ToString();
     }
 
-    public void SetCardData(CardData data)
+    public void AddCardData(CardData data)
     {
-        carddata = data;
+        carddatas.Add(data);
         SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
-        sprite.color = data.cardColor; 
+        sprite.color = data.cardColor;
+        cardModuleSprite.Add(data.cardArt);
+        for (int i = 0; i < carddatas.Count; i++)
+        {
+            moduleSlots[i].GetComponent<SpriteRenderer>().sprite = carddatas[i].cardArt;
+        }
     }
 
     void OnMouseDown()
@@ -173,7 +185,7 @@ public class Card : MonoBehaviour
                 
                 if (cardOwner == thePlayer)
                 {
-                    if (cardOwner.GetEnergy() >= Math.Abs(carddata.energyCost))
+                    if (cardOwner.GetEnergy() >= GetEnergyCost())
                     {
 
                         PlayCard();
@@ -195,46 +207,41 @@ public class Card : MonoBehaviour
     public void PlayCard()
     {
 
-        cardOwner.ChangeEnergy(carddata.energyCost);
+        cardOwner.ChangeEnergy(-GetEnergyCost());
         gameObject.SetActive(false);
         isPlayable = false;
         cardOwner.discardPile.Add(this);
         cardOwner.hand.Remove(this);
-        switch (carddata.cardEffect)
-        {
-            case CardData.CardEffect.Attack:
-                ResolveAttack(carddata.statValue);
-                break;
-            case CardData.CardEffect.Armor:
-                ResolveShield(carddata.statValue);
-                break;
-            case CardData.CardEffect.Energy:
-                cardOwner.ChangeEnergy(carddata.statValue);
-                break;
-            case CardData.CardEffect.AttackNArmor:
-                ResolveAttack(carddata.values[0]);
-                ResolveShield(carddata.values[1]);
-                break;
-            case CardData.CardEffect.StrengthUp:
-                cardOwner.ChangeStrength(carddata.statValue);
-                //Debug.Log(carddata.statValue);
-                break;
-            case CardData.CardEffect.ShieldUp:
-                cardOwner.ChangeShieldBonus(carddata.statValue);
-                break;
-            case CardData.CardEffect.BaseEnergyUp:
-                cardOwner.ChangeBaseEnergy(carddata.statValue);
-                break;
-            case CardData.CardEffect.Unblockable:
-                ResolveUnblockableAttack(carddata.statValue);
-                break;
-            case CardData.CardEffect.SelfInflict:
-                ResolveAttack(carddata.values[0]);
-                ResolveSelfInflict(carddata.values[1]);
-                break;
-            case CardData.CardEffect.ShieldBreaker:
-                ResolveShieldBreaker(carddata.statValue);
-                break;
+        for (int i =0; i < carddatas.Count; i++)
+        { 
+            switch (carddatas[i].cardEffect)
+            {
+                case CardData.CardEffect.Attack:
+                    ResolveAttack(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.Armor:
+                    ResolveShield(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.Energy:
+                    cardOwner.ChangeEnergy(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.StrengthUp:
+                    cardOwner.ChangeStrength(carddatas[i].statValue);
+                    //Debug.Log(carddata.statValue);
+                    break;
+                case CardData.CardEffect.ShieldUp:
+                    cardOwner.ChangeShieldBonus(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.BaseEnergyUp:
+                    cardOwner.ChangeBaseEnergy(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.Unblockable:
+                    ResolveUnblockableAttack(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.ShieldBreaker:
+                    ResolveShieldBreaker(carddatas[i].statValue);
+                    break;
+            }
         }
 
 
@@ -250,8 +257,9 @@ public class Card : MonoBehaviour
 
     void DisplayText()
     {
-        cardText.text = "energy" + carddata.energyCost;
-        cardDescription.text = carddata.cardDescription;
+        cardText.text = "energy" + GetEnergyCost();
+        
+        
     }
 
     void ResolveAttack(int amount)

@@ -17,5 +17,6 @@ MonoBehaviour:
   values: 
   cardDescription: Bonus to shield
   cardEffect: 5
-  cardArt: {fileID: 0}
+  cardArt: {fileID: 7482667652216324306, guid: 930922dfb7005474593ec3bbb894b763, type: 3}
+  cardImage: {fileID: 0}
   cardColor: {r: 0.32452828, g: 0.8838682, b: 1, a: 1}
