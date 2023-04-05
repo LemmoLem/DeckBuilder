@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public int baseEnergy;
     public int strength;
     public int shields;
+    int baseShields;
     public int shieldBonus;
     public List<Card> hand = new List<Card>();
     public int handSize;
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public List<Card> discardPile = new List<Card>();
     public PlayerArea playerArea;
     public GameManager gameManager;
+    int damageNow, damageNext, shieldBreakNow, shieldBreakNext, unblockNow, unblockNext;
 
     //base energy/max energy is the amount of energy the player starts each turn with
 
@@ -27,6 +29,12 @@ public class PlayerController : MonoBehaviour
         handSize = 5;
         strength = 0;
         shieldBonus = 0;
+        damageNext = 0;
+        damageNow = 0;
+        shieldBreakNow = 0;
+        shieldBreakNext = 0;
+        unblockNow = 0;
+        unblockNext = 0;
     }
 
     // Update is called once per frame
@@ -175,6 +183,11 @@ public class PlayerController : MonoBehaviour
         strength += amount;
     }
 
+    public void SetShields(int amount)
+    {
+        shields = amount;
+    }
+
     public int GetShields()
     {
         return shields;
@@ -213,6 +226,11 @@ public class PlayerController : MonoBehaviour
         ClearHand();
         energy = baseEnergy;
         DrawNewHand();
+        shields = baseShields;
+        damageNow = damageNext;
+        damageNext = 0;
+        shieldBreakNow = shieldBreakNext;
+        shieldBreakNext = 0;
     }
     public void CheckIfTurnOver()
     {
@@ -233,5 +251,31 @@ public class PlayerController : MonoBehaviour
     public GameManager GetGameManager()
     {
         return gameManager;
+    }
+
+    public int GetDamageNow()
+    {
+        return damageNow;
+    }
+    public void AddToDamageNext(int amount)
+    {
+        damageNext += amount;
+    }
+
+    public int GetShieldBreakNow()
+    {
+        return shieldBreakNow;
+    }
+    public void AddToShieldBreakNext(int amount)
+    {
+        shieldBreakNext += amount;
+    }
+    public int GetUnblockNow()
+    {
+        return unblockNow;
+    }
+    public void AddToUnblockNext(int amount)
+    {
+        unblockNext += amount;
     }
 }

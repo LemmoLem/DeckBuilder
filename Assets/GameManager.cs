@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 /*
     
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController thePlayer;
     public NPCController npc;
+    List<PlayerController> players = new List<PlayerController>();
     public River river;
     List<Card> top = new List<Card>();
     List<Card> middle = new List<Card>();
@@ -44,11 +46,50 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // river cards is a list of lists. cards are added into top, middle and bottom by accesing that
+        players.Add(thePlayer);
+        players.Add(npc);
         riverCards.Add(top);
         riverCards.Add(middle);
         riverCards.Add(bottom);
         AddNewCardsToDrawPile(25);
         SpawnRiver();
+
+        List<int> intlist = new List<int>();
+
+
+        for (int i = 0; i < 10; i++) {
+            int num5 = UnityEngine.Random.Range(0, 9);
+            bool isadded = false;
+            int count = 0;
+            if (intlist.Count == 0)
+            {
+                intlist.Add(num5);
+                isadded = true;
+            }
+            while (!isadded)
+            {
+                //if priority at the index is more than the data then add it where that one is
+                if (intlist[count] > num5)
+                {
+                    intlist.Insert(count, num5);
+                    isadded = true;
+                }
+                count++;
+                if (count == intlist.Count && !isadded)
+                {
+                    intlist.Add(num5);
+                    isadded = true;
+                }
+
+            }
+        }
+        //Debug.Log("pring full list now");
+        for (int j =0; j < intlist.Count; j++)
+        {
+            //Debug.Log(intlist[j]);
+        }
+
+
     }
 
     // Update is called once per frame
@@ -94,8 +135,7 @@ public class GameManager : MonoBehaviour
             int num = UnityEngine.Random.Range(0, cardDatas.Count);
             //Debug.Log(num);
             card.AddCardData(cardDatas[num]);
-            int num2 = UnityEngine.Random.Range(0, 4);
-
+            int num2 = UnityEngine.Random.Range(0, 9);
             for (int i = 0; i < num2; i++)
             {
                 int num3 = UnityEngine.Random.Range(0, cardDatas.Count);
@@ -161,6 +201,7 @@ public class GameManager : MonoBehaviour
         }
         thePlayer.EndTurn();
         npc.EndTurn();
+        ApplyDamage();
         turnCount++;
         if (turnCount%5 == 0)
         {
@@ -252,6 +293,68 @@ public class GameManager : MonoBehaviour
         }
 
         return cards;
+    }
+
+    public void ApplyDamage()
+    {
+        //have a array and switch position of player and opponent and use [0] and [1]
+
+        //after every turn has finished it should apply the effects of unblock, shielbreaker and damage.
+        //first try apply damage to the npc. order is unblock, shield breaker and then reg damage
+        for (int i = 0; i < 2; i++)
+        {
+            //apply unblock
+            players[0].ChangeHealth(-players[1].GetUnblockNow());
+
+            //apply shieldbreak
+            if (players[0].GetShields() >= Math.Abs(players[1].GetShieldBreakNow() * 2))
+            {
+                players[0].ChangeShields(-players[1].GetShieldBreakNow() * 2);
+            }
+            else
+            {
+                //while the opponent has shields and the attack amount is less than 0
+                int amount = -players[1].GetShieldBreakNow();
+                while (players[0].GetShields() > 0 && amount < 0)
+                {
+                    players[0].ChangeShields(1);
+                    if (players[0].GetShields() > 0)
+                    {
+                        players[0].ChangeShields(1);
+                    }
+                    amount = amount + 1;
+                }
+                if (Math.Abs(amount) > 0)
+                {
+                    players[0].ChangeHealth(amount);
+                }
+            }
+
+            //apply regular attack
+            if (players[0].GetShields() > 0)
+            {
+                if (players[1].GetDamageNow() > players[0].GetShields())
+                {
+                    int trueAttack = players[1].GetDamageNow() - players[0].GetShields();
+                    players[0].SetShields(0);
+                    players[0].ChangeHealth(trueAttack);
+                }
+                else
+                {
+                    players[0].ChangeShields(-players[1].GetDamageNow());
+                }
+            }
+            else
+            {
+                players[0].ChangeHealth(-players[1].GetDamageNow());
+            }
+
+
+
+            PlayerController temp = players[0];
+            players[0] = players[1];
+            players[1] = temp;
+        }
     }
 
 }

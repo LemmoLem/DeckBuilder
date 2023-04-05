@@ -158,7 +158,32 @@ public class Card : MonoBehaviour
 
     public void AddCardData(CardData data)
     {
-        carddatas.Add(data);
+        data.SetPriority();
+        bool isadded = false;
+        int count = 0;
+
+        if (carddatas.Count == 0)
+        {
+            carddatas.Add(data);
+            isadded = true;
+        }
+        while (!isadded)
+        {
+            //if priority at the index is more than the data then add it where that one is
+            if (carddatas[count].GetPriority() > data.GetPriority())
+            {
+                carddatas.Insert(count, data);
+                isadded = true;
+            }
+            count++;
+            if (count == carddatas.Count && !isadded)
+            {
+                carddatas.Add(data);
+                isadded = true;
+            }
+
+
+        }
         SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
         sprite.color = data.cardColor;
         cardModuleSprite.Add(data.cardArt);
@@ -264,8 +289,34 @@ public class Card : MonoBehaviour
         
         
     }
-
+    // change this to return an amount and then elsewhere have a function for do damage
     void ResolveAttack(int amount)
+    {
+        // takes into account opposition shield and the strength of the player
+        int trueAttack = amount - Math.Abs(cardOwner.GetStrength());
+        cardOwner.AddToDamageNext(Math.Abs(trueAttack));
+    }
+    void ResolveShield(int amount)
+    {
+        cardOwner.ChangeShields(amount + cardOwner.GetShieldBonus());
+    }
+    void ResolveUnblockableAttack(int amount)
+    {
+        cardOwner.AddToUnblockNext(Math.Abs(amount));
+    }
+    void ResolveSelfInflict(int amount)
+    {
+        cardOpponent.AddToDamageNext(Math.Abs(amount));
+    }
+    void ResolveShieldBreaker(int amount)
+    {
+        cardOwner.AddToShieldBreakNext(Math.Abs(amount));
+    }
+
+
+
+    //below is old function for resolve damage
+    void DoDamage(int amount)
     {
         // takes into account opposition shield and the strength of the player
         int trueAttack = amount - Math.Abs(cardOwner.GetStrength());
@@ -287,35 +338,9 @@ public class Card : MonoBehaviour
             cardOpponent.ChangeHealth(trueAttack);
         }
     }
-    void ResolveShield(int amount)
-    {
-        cardOwner.ChangeShields(amount + cardOwner.GetShieldBonus());
-    }
-    void ResolveUnblockableAttack(int amount)
-    {
-        cardOpponent.ChangeHealth(amount);
-    }
-    void ResolveSelfInflict(int amount)
-    {
-        if (cardOwner.GetShields() > 0)
-        {
-            if (Math.Abs(amount) > cardOwner.GetShields())
-            {
-                amount = amount + cardOwner.GetShields();
-                cardOwner.ChangeShields(cardOwner.GetShields());
-                cardOwner.ChangeHealth(amount);
-            }
-            else
-            {
-                cardOwner.ChangeShields(amount);
-            }
-        }
-        else
-        {
-            cardOwner.ChangeHealth(amount);
-        }
-    }
-    void ResolveShieldBreaker(int amount)
+
+    //old resolve shield breaker
+    void DoShieldBreaker(int amount)
     {
         // have this card say it does for each damage to shield, does one more (if they still have shields)
 
@@ -338,7 +363,7 @@ public class Card : MonoBehaviour
                 }
                 amount = amount + 1;
             }
-            if (amount> 0)
+            if (amount > 0)
             {
                 ResolveAttack(amount);
             }

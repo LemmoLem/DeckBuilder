@@ -32,29 +32,28 @@ public class CardData : ScriptableObject
     public Color cardColor;
     int priority;
 
-    public void Awake()
+    public void SetPriority()
     {
         switch (cardEffect)
         {
             case CardEffect.Armor:
-                priority = 1;
+                priority = 5;
                 break;
 
             case CardEffect.Attack:
-                priority = 30;
+                priority = 31;
                 break;
-
             case CardEffect.Energy:
-                priority = 1;
+                priority = 10;
                 break;
             case CardEffect.StrengthUp:
-                priority = 0;
+                priority = 11;
                 break;
             case CardEffect.ShieldUp:
                 priority = 0;
                 break;
             case CardEffect.BaseEnergyUp:
-                priority = 0;
+                priority = 6;
                 break;
             case CardEffect.Unblockable:
                 priority = 30;
