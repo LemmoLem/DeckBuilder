@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,10 @@ public class PlayerController : MonoBehaviour
     public List<Card> discardPile = new List<Card>();
     public PlayerArea playerArea;
     public GameManager gameManager;
-    int damageNow, damageNext, shieldBreakNow, shieldBreakNext, unblockNow, unblockNext;
+    int damageNow, damageNext, shieldBreakNow, shieldBreakNext, unblockNow, unblockNext, shieldNext, shieldNow;
+    List<int> shieldNextTurns = new List<int>{0,0,0,0,0};
+    List<int> damageNextTurns = new List<int>{ 0,0,0,0,0};
+    PlayerController opponent;
 
     //base energy/max energy is the amount of energy the player starts each turn with
 
@@ -25,6 +29,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(shieldNextTurns[2]);
         energy = baseEnergy;
         handSize = 5;
         strength = 0;
@@ -35,6 +40,8 @@ public class PlayerController : MonoBehaviour
         shieldBreakNext = 0;
         unblockNow = 0;
         unblockNext = 0;
+        shieldNow = 0;
+        shieldNext = 0;
     }
 
     // Update is called once per frame
@@ -226,11 +233,19 @@ public class PlayerController : MonoBehaviour
         ClearHand();
         energy = baseEnergy;
         DrawNewHand();
-        shields = baseShields;
-        damageNow = damageNext;
-        damageNext = 0;
+        ApplyDamage();
         shieldBreakNow = shieldBreakNext;
         shieldBreakNext = 0;
+        // now should give u the shields u have in shield 5
+        AddNextTurnEffectsAndCycleThem();
+
+        shieldNow = shieldNext;
+        shieldNext = 0;
+        shields = baseShields + shieldNow;
+
+        damageNow = damageNext;
+        damageNext = 0;
+
     }
     public void CheckIfTurnOver()
     {
@@ -278,4 +293,82 @@ public class PlayerController : MonoBehaviour
     {
         unblockNext += amount;
     }
+
+    public void SetOpponent(PlayerController oppo)
+    {
+        opponent = oppo;
+    }
+
+    public void ApplyDamage()
+    {
+        //apply unblock
+        // 0 is opponent 
+        
+        opponent.ChangeHealth(this.GetUnblockNow());
+
+        //apply shieldbreak
+        if (opponent.GetShields() >= Math.Abs(this.GetShieldBreakNow() * 2))
+        {
+            opponent.ChangeShields(-this.GetShieldBreakNow() * 2);
+        }
+        else
+        {
+            //while the opponent has shields and the attack amount is less than 0
+            int amount = -this.GetShieldBreakNow();
+            while (opponent.GetShields() > 0 && amount < 0)
+            {
+                opponent.ChangeShields(1);
+                if (opponent.GetShields() > 0)
+                {
+                    opponent.ChangeShields(1);
+                }
+                amount = amount + 1;
+            }
+            if (Math.Abs(amount) > 0)
+            {
+                opponent.ChangeHealth(amount);
+            }
+        }
+
+        //apply regular attack
+        if (opponent.GetShields() > 0)
+        {
+            if (this.GetDamageNow() > opponent.GetShields())
+            {
+                int trueAttack = this.GetDamageNow() - opponent.GetShields();
+                opponent.SetShields(0);
+                opponent.ChangeHealth(trueAttack);
+            }
+            else
+            {
+                opponent.ChangeShields(-this.GetDamageNow());
+            }
+        }
+        else
+        {
+            opponent.ChangeHealth(-this.GetDamageNow());
+        }
+
+
+
+    }
+    void AddNextTurnEffectsAndCycleThem()
+    {
+        //add to damage next turn and shield next turn
+        damageNext += damageNextTurns[0];
+        shieldNext += shieldNextTurns[0];
+        damageNextTurns.RemoveAt(0);
+        shieldNextTurns.RemoveAt(0);
+        damageNextTurns.Add(0);
+        shieldNextTurns.Add(0);
+    }
+
+    public void AddToShieldNextTurns(int amount)
+    {
+        for (int i = 0; i < shieldNextTurns.Count; i++)
+        {
+            shieldNextTurns[i] += amount;
+        }
+    }
+
 }

@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController thePlayer;
     public NPCController npc;
-    List<PlayerController> players = new List<PlayerController>();
     public River river;
     List<Card> top = new List<Card>();
     List<Card> middle = new List<Card>();
@@ -46,13 +45,14 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // river cards is a list of lists. cards are added into top, middle and bottom by accesing that
-        players.Add(thePlayer);
-        players.Add(npc);
         riverCards.Add(top);
         riverCards.Add(middle);
         riverCards.Add(bottom);
         AddNewCardsToDrawPile(25);
         SpawnRiver();
+        thePlayer.SetOpponent(npc);
+        npc.SetOpponent(thePlayer);
+
 
         List<int> intlist = new List<int>();
 
@@ -201,7 +201,6 @@ public class GameManager : MonoBehaviour
         }
         thePlayer.EndTurn();
         npc.EndTurn();
-        ApplyDamage();
         turnCount++;
         if (turnCount%5 == 0)
         {
@@ -295,66 +294,6 @@ public class GameManager : MonoBehaviour
         return cards;
     }
 
-    public void ApplyDamage()
-    {
-        //have a array and switch position of player and opponent and use [0] and [1]
-
-        //after every turn has finished it should apply the effects of unblock, shielbreaker and damage.
-        //first try apply damage to the npc. order is unblock, shield breaker and then reg damage
-        for (int i = 0; i < 2; i++)
-        {
-            //apply unblock
-            players[0].ChangeHealth(-players[1].GetUnblockNow());
-
-            //apply shieldbreak
-            if (players[0].GetShields() >= Math.Abs(players[1].GetShieldBreakNow() * 2))
-            {
-                players[0].ChangeShields(-players[1].GetShieldBreakNow() * 2);
-            }
-            else
-            {
-                //while the opponent has shields and the attack amount is less than 0
-                int amount = -players[1].GetShieldBreakNow();
-                while (players[0].GetShields() > 0 && amount < 0)
-                {
-                    players[0].ChangeShields(1);
-                    if (players[0].GetShields() > 0)
-                    {
-                        players[0].ChangeShields(1);
-                    }
-                    amount = amount + 1;
-                }
-                if (Math.Abs(amount) > 0)
-                {
-                    players[0].ChangeHealth(amount);
-                }
-            }
-
-            //apply regular attack
-            if (players[0].GetShields() > 0)
-            {
-                if (players[1].GetDamageNow() > players[0].GetShields())
-                {
-                    int trueAttack = players[1].GetDamageNow() - players[0].GetShields();
-                    players[0].SetShields(0);
-                    players[0].ChangeHealth(trueAttack);
-                }
-                else
-                {
-                    players[0].ChangeShields(-players[1].GetDamageNow());
-                }
-            }
-            else
-            {
-                players[0].ChangeHealth(-players[1].GetDamageNow());
-            }
-
-
-
-            PlayerController temp = players[0];
-            players[0] = players[1];
-            players[1] = temp;
-        }
-    }
+   
 
 }

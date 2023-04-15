@@ -158,7 +158,6 @@ public class Card : MonoBehaviour
 
     public void AddCardData(CardData data)
     {
-        data.SetPriority();
         bool isadded = false;
         int count = 0;
 
@@ -170,7 +169,9 @@ public class Card : MonoBehaviour
         while (!isadded)
         {
             //if priority at the index is more than the data then add it where that one is
-            if (carddatas[count].GetPriority() > data.GetPriority())
+            // try this (int)Enum.Parse(typeof(Vehicle), data)
+            //Debug.Log(carddatas[count].cardEffect);
+            if ((int) carddatas[count].cardEffect > (int) data.cardEffect)
             {
                 carddatas.Insert(count, data);
                 isadded = true;
@@ -268,6 +269,9 @@ public class Card : MonoBehaviour
                     break;
                 case CardData.CardEffect.ShieldBreaker:
                     ResolveShieldBreaker(carddatas[i].statValue);
+                    break;
+                case CardData.CardEffect.Shield5Turn:
+                    cardOwner.AddToShieldNextTurns(carddatas[i].statValue + cardOwner.shieldBonus);
                     break;
             }
         }

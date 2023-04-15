@@ -23,51 +23,22 @@ public class CardData : ScriptableObject
      */
     public int energyCost;
     public int statValue;
-    public enum CardEffect {Attack, Armor, Energy, StrengthUp, ShieldUp, BaseEnergyUp, Unblockable, ShieldBreaker};
+    public enum CardEffect
+    {
+        Attack = 31,
+        Armor = 5,
+        Energy = 10,
+        StrengthUp = 11,
+        ShieldUp = 0,
+        BaseEnergyUp = 6,
+        Unblockable = 30,
+        ShieldBreaker = 29,
+        Shield5Turn = 7
+    }
     public CardEffect cardEffect;
     public Sprite cardArt;
     private GameManager gameManager;
     PlayerController player;
     PlayerController opponent;
     public Color cardColor;
-    int priority;
-
-    public void SetPriority()
-    {
-        switch (cardEffect)
-        {
-            case CardEffect.Armor:
-                priority = 5;
-                break;
-
-            case CardEffect.Attack:
-                priority = 31;
-                break;
-            case CardEffect.Energy:
-                priority = 10;
-                break;
-            case CardEffect.StrengthUp:
-                priority = 11;
-                break;
-            case CardEffect.ShieldUp:
-                priority = 0;
-                break;
-            case CardEffect.BaseEnergyUp:
-                priority = 6;
-                break;
-            case CardEffect.Unblockable:
-                priority = 30;
-                break;
-            case CardEffect.ShieldBreaker:
-                priority = 29;
-                break;
-        }
-
-    }
-
-    public int GetPriority()
-    {
-        return priority;
-    }
-
 }
