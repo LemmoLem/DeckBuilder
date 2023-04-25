@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
-  m_Name: Shield5
+  m_Name: LimitUse
   m_EditorClassIdentifier: 
-  energyCost: -3
-  statValue: 2
-  cardEffect: 7
-  cardArt: {fileID: 21300000, guid: b437d67912f471a4bb30b2704baac541, type: 3}
-  cardColor: {r: 0, g: 0.65014267, b: 1, a: 1}
+  energyCost: -1
+  statValue: 3
+  cardEffect: 35
+  cardArt: {fileID: 21300000, guid: 74fbfe5c903d92d498d575d7df467e5b, type: 3}
+  cardColor: {r: 0.2264151, g: 0.13755785, b: 0.1384551, a: 1}

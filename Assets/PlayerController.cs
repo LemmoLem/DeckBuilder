@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(shieldNextTurns[2]);
         energy = baseEnergy;
         handSize = 5;
         strength = 0;
@@ -230,23 +229,24 @@ public class PlayerController : MonoBehaviour
 
     public void EndTurn()
     {
-        ClearHand();
-        energy = baseEnergy;
-        DrawNewHand();
+        // so applys damage clears player hands, resets energy then draws new hand and applys next turn effects
         ApplyDamage();
-        shieldBreakNow = shieldBreakNext;
-        shieldBreakNext = 0;
-        // now should give u the shields u have in shield 5
-        AddNextTurnEffectsAndCycleThem();
+        // empty players hand
+        ClearHand();
+        // set energy for next turn
+        energy = baseEnergy;
+        // draw new hand
+        DrawNewHand();
+        // apply all damage
 
-        shieldNow = shieldNext;
-        shieldNext = 0;
-        shields = baseShields + shieldNow;
-
-        damageNow = damageNext;
-        damageNext = 0;
-
+        // start next turn        
     }
+    public void StartTurn()
+    {
+        AddNextTurnEffectsAndCycleThem();
+        NextEffectsMakeNow();
+    }
+
     public void CheckIfTurnOver()
     {
         //also will need a way for players to willingly end turn without using all their energy. end turn button i.e.
@@ -297,6 +297,18 @@ public class PlayerController : MonoBehaviour
     public void SetOpponent(PlayerController oppo)
     {
         opponent = oppo;
+    }
+
+    public List<int> GetShieldsNextTurns()
+    {
+        return shieldNextTurns;
+    }
+
+    public string GetShield5String()
+    {
+        string str = shieldNextTurns[0]+"," + shieldNextTurns[1] + "," + shieldNextTurns[2] + "," + shieldNextTurns[3] + "," + shieldNextTurns[4];
+        
+        return str;
     }
 
     public void ApplyDamage()
@@ -369,6 +381,22 @@ public class PlayerController : MonoBehaviour
         {
             shieldNextTurns[i] += amount;
         }
+    }
+
+    void NextEffectsMakeNow()
+    {
+        // make shield now whats in shield next
+        shieldNow = shieldNext;
+        // make shield next 0
+        shieldNext = 0;
+        // add shieldNow to baseShields
+        shields = baseShields + shieldNow;
+
+        damageNow = damageNext;
+        damageNext = 0;
+
+        shieldBreakNow = shieldBreakNext;
+        shieldBreakNext = 0;
     }
 
 }

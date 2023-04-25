@@ -18,12 +18,15 @@ public class Card : MonoBehaviour
     public NPCController npc;
     PlayerController cardOwner, cardOpponent;
     int playerBid, npcBid;
+    bool isMinusLife;
+    int life = 0;
     public GameObject[] moduleSlots;
     List<Sprite> cardModuleSprite = new List<Sprite>();
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Im start");  
         isPlayable = true;
         gameManager = FindObjectOfType<GameManager>();
         SetButtonUINotActive();
@@ -33,6 +36,14 @@ public class Card : MonoBehaviour
         energyBidText.text = playerBid.ToString();
         thePlayer = gameManager.GetThePlayer();
         npc = gameManager.GetTheNPC();
+        foreach(CardData data in carddatas)
+        {
+            if (data.cardEffect.Equals(CardData.CardEffect.LimitedUse))
+            {
+                Debug.Log(life + " life");
+                life = life + data.statValue;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -237,12 +248,11 @@ public class Card : MonoBehaviour
         isPlayable = false;
         cardOwner.discardPile.Add(this);
         cardOwner.hand.Remove(this);
-    
+        isMinusLife = false;
 
         for (int i =0; i < carddatas.Count; i++)
         {
             
-
             switch (carddatas[i].cardEffect)
             {
                 case CardData.CardEffect.Attack:
@@ -273,13 +283,29 @@ public class Card : MonoBehaviour
                 case CardData.CardEffect.Shield5Turn:
                     cardOwner.AddToShieldNextTurns(carddatas[i].statValue + cardOwner.shieldBonus);
                     break;
+                case CardData.CardEffect.LimitedUse:
+                    LimitUse();
+                    break;
             }
         }
 
 
 
     }
-
+    // so limit use the card still gets played but afterwards its removed from discard pile :-o
+    // minus one from life of card n then dont minus one for other modules. 
+    // so life is sum of modules
+    void LimitUse()
+    {   
+        if (isMinusLife == false) { 
+            life = life - 1;
+            isMinusLife = true;
+            if (life == 0)
+            {
+                cardOwner.discardPile.Remove(this);
+            }
+        }
+    }
 
     
     public void SetPlayable(bool option)

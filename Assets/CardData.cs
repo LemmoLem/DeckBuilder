@@ -33,7 +33,8 @@ public class CardData : ScriptableObject
         BaseEnergyUp = 6,
         Unblockable = 30,
         ShieldBreaker = 29,
-        Shield5Turn = 7
+        Shield5Turn = 7,
+        LimitedUse = 35
     }
     public CardEffect cardEffect;
     public Sprite cardArt;

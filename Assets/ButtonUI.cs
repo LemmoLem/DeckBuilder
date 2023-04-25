@@ -7,7 +7,6 @@ public class ButtonUI : MonoBehaviour
     public GameManager gameManager;
     public void OnButtonPress()
     {
-        Debug.Log("end turn button been pressed");
         gameManager.NextTurn();
     }
 

@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
             int num = UnityEngine.Random.Range(0, cardDatas.Count);
             //Debug.Log(num);
             card.AddCardData(cardDatas[num]);
-            int num2 = UnityEngine.Random.Range(0, 9);
+            int num2 = UnityEngine.Random.Range(0, 3);
             for (int i = 0; i < num2; i++)
             {
                 int num3 = UnityEngine.Random.Range(0, cardDatas.Count);
@@ -162,14 +162,14 @@ public class GameManager : MonoBehaviour
 
     void DisplayText()
     {
-        thePlayerText.text = "Draw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: " 
+        thePlayerText.text = "Draw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: "
             + thePlayer.GetDiscardPileLength() + "\nHealth: " + thePlayer.GetHealth() + "\nEnergy: " + thePlayer.GetEnergy()
-            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength();
+            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " + thePlayer.GetShield5String();
 
 
         npcText.text = "Draw Pile: " + npc.GetDrawPileLength() + "\nDiscard Pile: "
                     + npc.GetDiscardPileLength() + "\nHealth: " + npc.GetHealth() + "\nEnergy: " + npc.GetEnergy()
-                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength();
+                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength() + "\nShield5: " + npc.GetShield5String();
         if (thePlayer.GetHealth() < 0 || npc.GetHealth() < 0)
         {
             gameOverText.text = "GAME OVER";
@@ -208,7 +208,8 @@ public class GameManager : MonoBehaviour
             AddNewCardsToDrawPile(5);
             SpawnColumnOfCards();
         }
-        
+        thePlayer.StartTurn();
+        npc.StartTurn();
         
     }
 
