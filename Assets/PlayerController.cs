@@ -310,6 +310,12 @@ public class PlayerController : MonoBehaviour
         
         return str;
     }
+    public string GetDamage5String()
+    {
+        string str = damageNextTurns[0] + "," + damageNextTurns[1] + "," + damageNextTurns[2] + "," + damageNextTurns[3] + "," + damageNextTurns[4];
+
+        return str;
+    }
 
     public void ApplyDamage()
     {
@@ -349,7 +355,7 @@ public class PlayerController : MonoBehaviour
             {
                 int trueAttack = this.GetDamageNow() - opponent.GetShields();
                 opponent.SetShields(0);
-                opponent.ChangeHealth(trueAttack);
+                opponent.ChangeHealth(-trueAttack);
             }
             else
             {
@@ -380,6 +386,13 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < shieldNextTurns.Count; i++)
         {
             shieldNextTurns[i] += amount;
+        }
+    }
+    public void AddToDamageNextTurns(int amount)
+    {
+        for (int i = 0; i < damageNextTurns.Count; i++)
+        {
+            damageNextTurns[i] += amount;
         }
     }
 

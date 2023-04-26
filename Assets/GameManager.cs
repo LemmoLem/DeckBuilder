@@ -164,12 +164,12 @@ public class GameManager : MonoBehaviour
     {
         thePlayerText.text = "Draw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: "
             + thePlayer.GetDiscardPileLength() + "\nHealth: " + thePlayer.GetHealth() + "\nEnergy: " + thePlayer.GetEnergy()
-            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " + thePlayer.GetShield5String();
+            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " + thePlayer.GetShield5String() + "\nDamage5: " + thePlayer.GetDamage5String();
 
 
         npcText.text = "Draw Pile: " + npc.GetDrawPileLength() + "\nDiscard Pile: "
                     + npc.GetDiscardPileLength() + "\nHealth: " + npc.GetHealth() + "\nEnergy: " + npc.GetEnergy()
-                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength() + "\nShield5: " + npc.GetShield5String();
+                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength() + "\nShield5: " + npc.GetShield5String() + "\nDamage5: " + npc.GetDamage5String();
         if (thePlayer.GetHealth() < 0 || npc.GetHealth() < 0)
         {
             gameOverText.text = "GAME OVER";

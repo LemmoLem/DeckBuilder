@@ -34,7 +34,9 @@ public class CardData : ScriptableObject
         Unblockable = 30,
         ShieldBreaker = 29,
         Shield5Turn = 7,
-        LimitedUse = 35
+        LimitedUse = 35,
+        Attack5 = 32,
+        AddModule = 34
     }
     public CardEffect cardEffect;
     public Sprite cardArt;
@@ -42,4 +44,5 @@ public class CardData : ScriptableObject
     PlayerController player;
     PlayerController opponent;
     public Color cardColor;
+    public CardData addModule;
 }

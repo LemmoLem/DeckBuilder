@@ -286,12 +286,35 @@ public class Card : MonoBehaviour
                 case CardData.CardEffect.LimitedUse:
                     LimitUse();
                     break;
+                case CardData.CardEffect.Attack5:
+                    cardOwner.AddToDamageNextTurns(carddatas[i].statValue + cardOwner.strength);
+                    break;
+                case CardData.CardEffect.AddModule:
+                    for (int j = 0; j < carddatas[i].statValue; j++)
+                    {
+                        AddModuleToLeftestCardInHand(carddatas[i].addModule);
+                    }
+                   break;
             }
         }
 
 
 
     }
+
+    void AddModuleToLeftestCardInHand(CardData data)
+    {
+        bool isAdded = false;
+        foreach (Card card in cardOwner.hand)
+        {
+            if (card.carddatas.Count < 9 & isAdded == false)
+            {
+                card.AddCardData(data);
+                isAdded = true;
+            }
+        }
+    }
+
     // so limit use the card still gets played but afterwards its removed from discard pile :-o
     // minus one from life of card n then dont minus one for other modules. 
     // so life is sum of modules
