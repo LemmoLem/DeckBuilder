@@ -176,6 +176,10 @@ public class PlayerController : MonoBehaviour
     {
         return energy;
     }
+    public void SetEnergy(int amount)
+    {
+        energy = amount;
+    }
     public void ChangeEnergy(int amount)
     {
         energy += amount;

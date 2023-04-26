@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
   m_Name: LimitUse
   m_EditorClassIdentifier: 
-  energyCost: -1
+  energyCost: 0
   statValue: 3
   cardEffect: 35
   cardArt: {fileID: 21300000, guid: 74fbfe5c903d92d498d575d7df467e5b, type: 3}
   cardColor: {r: 0.2264151, g: 0.13755785, b: 0.1384551, a: 1}
+  addModule: {fileID: 0}

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
-  m_Name: Unblockable
+  m_Name: Discard
   m_EditorClassIdentifier: 
-  energyCost: -3
-  statValue: -1
-  cardEffect: 29
-  cardArt: {fileID: 21300000, guid: 89e7f4cf9e983154f95f9d643a0c0ddd, type: 3}
-  cardColor: {r: 0.26165894, g: 0.9433962, b: 0.26295143, a: 1}
+  energyCost: 1
+  statValue: 1
+  cardEffect: 33
+  cardArt: {fileID: 21300000, guid: 3df8b9cb0271acc4c9b9b32ec4fe682a, type: 3}
+  cardColor: {r: 0.29622638, g: 1, b: 0.36191186, a: 1}
   addModule: {fileID: 0}

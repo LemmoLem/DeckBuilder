@@ -128,6 +128,11 @@ public class Card : MonoBehaviour
         {
             energySum += carddatas[i].energyCost;
         }
+        // to ensure that cards cant be 0 cost as dont wanna implement that just yet
+        if (energySum >= 0)
+        {
+            energySum = -1;
+        }
         return Math.Abs(energySum);
     }
     public int GetNPCBid()
@@ -295,11 +300,45 @@ public class Card : MonoBehaviour
                         AddModuleToLeftestCardInHand(carddatas[i].addModule);
                     }
                    break;
+                case CardData.CardEffect.Discard:
+                    for (int j = 0; j < carddatas[i].statValue; j++)
+                    {
+                        DiscardRandomCardFromHand();
+                    }
+                   
+                    break;
+                case CardData.CardEffect.PlayRandomCard:
+                    for (int j = 0; j < carddatas[i].statValue; j++)
+                    {
+                        PlayRandomCardFromHand();
+                    }
+                    break;
             }
         }
+    }
+    void PlayRandomCardFromHand()
+    {
+        // play a random card and reset players energy from what was played
+        if (cardOwner.hand.Count > 0)
+        {
+            var r = UnityEngine.Random.Range(0, cardOwner.hand.Count);
+            int energySave = cardOwner.GetEnergy();
+            cardOwner.hand[r].PlayCard();
+            cardOwner.SetEnergy(energySave);
+        }
+    }
 
-
-
+    void DiscardRandomCardFromHand()
+    {
+        if (cardOwner.hand.Count > 0)
+        {
+            var r = UnityEngine.Random.Range(0, cardOwner.hand.Count);
+            Card cardToDiscard = cardOwner.hand[r];
+            cardToDiscard.gameObject.SetActive(false);
+            cardToDiscard.isPlayable = false;
+            cardOwner.discardPile.Add(cardToDiscard);
+            cardOwner.hand.Remove(cardToDiscard);
+        }
     }
 
     void AddModuleToLeftestCardInHand(CardData data)
