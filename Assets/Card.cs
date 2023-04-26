@@ -248,6 +248,17 @@ public class Card : MonoBehaviour
     public void PlayCard()
     {
 
+        /* 
+        if (carddatas[i].isInvertTargert == false)
+        {
+            
+        }
+        else if (carddatas[i].isInvertTargert == true)
+        {
+
+        }
+        */
+
         cardOwner.ChangeEnergy(-GetEnergyCost());
         gameObject.SetActive(false);
         isPlayable = false;
@@ -261,38 +272,102 @@ public class Card : MonoBehaviour
             switch (carddatas[i].cardEffect)
             {
                 case CardData.CardEffect.Attack:
-                    ResolveAttack(carddatas[i].statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        ResolveAttack(carddatas[i].statValue);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        InvertResolveAttack(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.Armor:
-                    ResolveShield(carddatas[i].statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        ResolveShield(carddatas[i].statValue);
+
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        InvertResolveShield(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.Energy:
                     cardOwner.ChangeEnergy(carddatas[i].statValue);
                     break;
                 case CardData.CardEffect.StrengthUp:
-                    cardOwner.ChangeStrength(carddatas[i].statValue);
-                    //Debug.Log(carddata.statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        cardOwner.ChangeStrength(carddatas[i].statValue);
+
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        cardOpponent.ChangeStrength(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.ShieldUp:
-                    cardOwner.ChangeShieldBonus(carddatas[i].statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        cardOwner.ChangeShieldBonus(carddatas[i].statValue);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        cardOpponent.ChangeShieldBonus(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.BaseEnergyUp:
-                    cardOwner.ChangeBaseEnergy(carddatas[i].statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        cardOwner.ChangeBaseEnergy(carddatas[i].statValue);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        cardOpponent.ChangeBaseEnergy(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.Unblockable:
-                    ResolveUnblockableAttack(carddatas[i].statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        ResolveUnblockableAttack(carddatas[i].statValue);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        InvertResolveUnblockableAttack(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.ShieldBreaker:
-                    ResolveShieldBreaker(carddatas[i].statValue);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        ResolveShieldBreaker(carddatas[i].statValue);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        InvertResolveShieldBreaker(carddatas[i].statValue);
+                    }
                     break;
                 case CardData.CardEffect.Shield5Turn:
-                    cardOwner.AddToShieldNextTurns(carddatas[i].statValue + cardOwner.shieldBonus);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        cardOwner.AddToShieldNextTurns(carddatas[i].statValue + cardOwner.shieldBonus);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        cardOpponent.AddToShieldNextTurns(carddatas[i].statValue + cardOwner.shieldBonus);
+                    }
                     break;
                 case CardData.CardEffect.LimitedUse:
                     LimitUse();
                     break;
                 case CardData.CardEffect.Attack5:
-                    cardOwner.AddToDamageNextTurns(carddatas[i].statValue + cardOwner.strength);
+                    if (carddatas[i].isInvertTargert == false)
+                    {
+                        cardOwner.AddToDamageNextTurns(carddatas[i].statValue + cardOwner.strength);
+                    }
+                    else if (carddatas[i].isInvertTargert == true)
+                    {
+                        cardOpponent.AddToDamageNextTurns(carddatas[i].statValue + cardOwner.strength);
+                    }
                     break;
                 case CardData.CardEffect.AddModule:
                     for (int j = 0; j < carddatas[i].statValue; j++)
@@ -388,13 +463,27 @@ public class Card : MonoBehaviour
         int trueAttack = amount - Math.Abs(cardOwner.GetStrength());
         cardOwner.AddToDamageNext(Math.Abs(trueAttack));
     }
+    // this is done this way as want to apply attack from player 
+    void InvertResolveAttack(int amount)
+    {
+        int trueAttack = amount - Math.Abs(cardOwner.GetStrength());
+        cardOpponent.AddToDamageNext(Math.Abs(trueAttack));
+    }
     void ResolveShield(int amount)
     {
         cardOwner.ChangeShields(amount + cardOwner.GetShieldBonus());
     }
+    void InvertResolveShield(int amount)
+    {
+        cardOpponent.ChangeShields(amount + cardOwner.GetShieldBonus());
+    }
     void ResolveUnblockableAttack(int amount)
     {
         cardOwner.AddToUnblockNext(Math.Abs(amount));
+    }
+    void InvertResolveUnblockableAttack(int amount)
+    {
+        cardOpponent.AddToUnblockNext(Math.Abs(amount));
     }
     void ResolveSelfInflict(int amount)
     {
@@ -403,6 +492,10 @@ public class Card : MonoBehaviour
     void ResolveShieldBreaker(int amount)
     {
         cardOwner.AddToShieldBreakNext(Math.Abs(amount));
+    }
+    void InvertResolveShieldBreaker(int amount)
+    {
+        cardOpponent.AddToShieldBreakNext(Math.Abs(amount));
     }
 
 

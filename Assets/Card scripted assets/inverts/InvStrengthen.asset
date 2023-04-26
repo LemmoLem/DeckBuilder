@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13a947884e77414439584d7276239e63, type: 3}
-  m_Name: Damage5
+  m_Name: InvStrengthen
   m_EditorClassIdentifier: 
-  energyCost: -3
-  statValue: 2
-  cardEffect: 31
-  cardArt: {fileID: 21300000, guid: a9371395e4bade64bba417151eba17bb, type: 3}
-  cardColor: {r: 0.3764706, g: 0, b: 0.053508826, a: 1}
+  energyCost: 2
+  statValue: 1
+  cardEffect: 11
+  cardArt: {fileID: 21300000, guid: 1610dc83a00195840ab19054a2f477f7, type: 3}
+  cardColor: {r: 0.41568628, g: 0.06666667, b: 0.20784314, a: 1}
   addModule: {fileID: 0}
-  isInvertTargert: 0
+  isInvertTargert: 1

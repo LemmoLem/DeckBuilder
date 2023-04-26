@@ -47,4 +47,5 @@ public class CardData : ScriptableObject
     PlayerController opponent;
     public Color cardColor;
     public CardData addModule;
+    public bool isInvertTargert;
 }
