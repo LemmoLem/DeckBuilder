@@ -428,7 +428,7 @@ public class Card : MonoBehaviour
     void AddModuleToLeftestCardInHand(CardData data)
     {
         bool isAdded = false;
-        foreach (Card card in cardOwner.hand)
+        foreach (Card card in cardOwner.GetCardsInHand())
         {
             if (card.carddatas.Count < 9 & isAdded == false)
             {
