@@ -25,20 +25,22 @@ public class CardData : ScriptableObject
     public int statValue;
     public enum CardEffect
     {
-        Attack = 30,
-        Armor = 5,
-        Energy = 10,
-        StrengthUp = 11,
-        ShieldUp = 0,
-        BaseEnergyUp = 6,
-        Unblockable = 29,
-        ShieldBreaker = 28,
-        Shield5Turn = 7,
-        LimitedUse = 35,
-        Attack5 = 31,
-        AddModule = 34,
-        Discard = 33,
-        PlayRandomCard = 32
+        Attack = 300,
+        Armor = 50,
+        Energy = 100,
+        StrengthUp = 110,
+        ShieldUp = 00,
+        BaseEnergyUp = 60,
+        Unblockable = 290,
+        ShieldBreaker = 280,
+        Shield5Turn = 70,
+        LimitedUse = 350,
+        Attack5 = 310,
+        AddModule = 340,
+        Discard = 330,
+        PlayRandomCard = 320,
+        DrawCard = 325,
+        HandSizeUp = 25
     }
     public CardEffect cardEffect;
     public Sprite cardArt;

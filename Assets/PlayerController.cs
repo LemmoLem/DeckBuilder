@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public GameManager gameManager;
     int damageNow, damageNext, shieldBreakNow, shieldBreakNext, unblockNow, unblockNext, shieldNext, shieldNow;
     List<int> shieldNextTurns = new List<int>{0,0,0,0,0};
-    List<int> damageNextTurns = new List<int>{ 0,0,0,0,0};
+    List<int> damageNextTurns = new List<int>{0,0,0,0,0};
     PlayerController opponent;
 
     //base energy/max energy is the amount of energy the player starts each turn with
@@ -41,12 +41,56 @@ public class PlayerController : MonoBehaviour
         unblockNext = 0;
         shieldNow = 0;
         shieldNext = 0;
+        for (int i = 0; i < handSize; i++)
+        {
+            hand.Add(null);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    public int GetHandLength()
+    {
+        int sum = 0;
+        for (int j = 0; j < hand.Count; j++)
+        {
+            if (hand[j] != null)
+            {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    void AddCardToHand(Card card)
+    {
+        bool isAdded = false;
+        for (int i = 0; i < handSize; i++)
+        {
+            if (hand[i] == null & isAdded == false)
+            {
+                isAdded = true;
+                hand[i] = card;
+                card.transform.position = playerArea.slots[i].position;
+            }
+        }
+    }
+
+    public List<Card> GetCardsInHand()
+    {
+        List<Card> cardsInHand = new List<Card>();
+        for (int i = 0; i < hand.Count; i++)
+        {
+            if (hand[i] != null)
+            {
+                cardsInHand.Add(hand[i]);
+            }
+        }
+        return cardsInHand;
     }
 
     void DrawNewHand()
@@ -64,10 +108,9 @@ public class PlayerController : MonoBehaviour
             //wasnt sure if it would update drawpile count when it checks for loop
             for (int i = 0; i < length; i++)
             {
-                drawPile[0].transform.position = playerArea.slots[i].position;
                 drawPile[0].gameObject.SetActive(true);
                 drawPile[0].SetPlayable(true);
-                hand.Add(drawPile[0]);
+                AddCardToHand(drawPile[0]);
                 drawPile.RemoveAt(0);
                 // from blackthorn prod 
 
@@ -80,33 +123,57 @@ public class PlayerController : MonoBehaviour
             //wasnt sure if it would update drawpile count when it checks for loop
             for (int i = 0; i < handSize; i++)
             {
-                drawPile[0].transform.position = playerArea.slots[i].position;
                 drawPile[0].gameObject.SetActive(true);
                 drawPile[0].SetPlayable(true);
-                hand.Add(drawPile[0]);
+                AddCardToHand(drawPile[0]);
                 drawPile.RemoveAt(0);
                 // from blackthorn prod 
 
             }
         }
-        if (hand.Count < handSize)
+        if (GetHandLength() < handSize)
         {
             //so if hand count is less than 5 then that means there werent enough in draw pile n so shuffling and drawing more
             if (discardPile.Count > 0)
             {
                 Shuffle();
-                while (hand.Count < 5 && drawPile.Count> 0)
+                while (GetHandLength() < handSize && drawPile.Count > 0)
                 {
-                    drawPile[0].transform.position = playerArea.slots[hand.Count].position;
                     drawPile[0].gameObject.SetActive(true);
                     drawPile[0].SetPlayable(true);
-                    hand.Add(drawPile[0]);
+                    AddCardToHand(drawPile[0]);
                     drawPile.RemoveAt(0);
 
                 }
             }
         }
 
+    }
+
+    // got to save the position card was
+    public void DrawACard()
+    {
+        if (GetHandLength() < handSize)
+        {
+            bool isAdded = false;
+            for (int i = 0; i < handSize; i++)
+            {
+                // so hand[i] isnt usable as less than hand size
+                if (hand[i] == null & isAdded == false)
+                {
+                    Debug.Log("THis is it");
+                    if (drawPile.Count == 0)
+                    {
+                        Shuffle();
+                    }
+                    drawPile[0].gameObject.SetActive(true);
+                    drawPile[0].SetPlayable(true);
+                    AddCardToHand(drawPile[0]);
+                    drawPile.RemoveAt(0);
+                    isAdded = true;
+                }
+            }
+        }
     }
 
 
@@ -119,7 +186,6 @@ public class PlayerController : MonoBehaviour
         {
             discardPile.AddRange(drawPile);
             drawPile.Clear();
-            Debug.Log("this shouldnt be run - Drawpile length " + drawPile.Count + " Discard pile length " + discardPile.Count);
 
         }
 
@@ -222,13 +288,24 @@ public class PlayerController : MonoBehaviour
     void ClearHand()
     {
         //so when a card is played it needs to be removed from the players hand and added into their discard pile
-        for (int i =0; i < hand.Count; i++)
+        List<Card> addToDiscard = new List<Card>();
+        bool isAdded = false;
+        for (int i = 0; i < handSize; i++)
         {
-            hand[i].SetPlayable(false);
-            hand[i].gameObject.SetActive(false);
+            if (hand[i] != null)
+            {
+                addToDiscard.Add(hand[i]);
+                hand[i].SetPlayable(false);
+                hand[i].gameObject.SetActive(false);
+                hand[i] = null;
+                isAdded = true;
+            }
         }
-        discardPile.AddRange(hand);
-        hand.Clear();
+        Debug.Log(addToDiscard.Count + "THIS IS HWO MUCH TO ADD TO DSICARD");
+        if (isAdded)
+        {
+            discardPile.AddRange(addToDiscard);
+        }
     }
 
     public void EndTurn()
@@ -259,7 +336,7 @@ public class PlayerController : MonoBehaviour
             //add line here to check whether the player has any cards in their hand and whether any cards in the river
             EndTurn();
         }
-        if (gameManager.GetRiverCardLength() == 0 && hand.Count == 0)
+        if (gameManager.GetRiverCardLength() == 0 && GetHandLength() == 0)
         {
             EndTurn();
         }

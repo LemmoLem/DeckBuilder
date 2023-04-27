@@ -263,7 +263,8 @@ public class Card : MonoBehaviour
         gameObject.SetActive(false);
         isPlayable = false;
         cardOwner.discardPile.Add(this);
-        cardOwner.hand.Remove(this);
+        int index  = cardOwner.hand.IndexOf(this);
+        cardOwner.hand[index] = null;
         isMinusLife = false;
 
         for (int i =0; i < carddatas.Count; i++)
@@ -388,31 +389,39 @@ public class Card : MonoBehaviour
                         PlayRandomCardFromHand();
                     }
                     break;
+                case CardData.CardEffect.DrawCard:
+                    // so this should draw a card, but as when u play a card it discards the card. i guess i dont mind drawing a card as playing a card leaves a space ye.
+                    for (int j = 0; j < carddatas[i].statValue; j++)
+                    {
+                        cardOwner.DrawACard();
+                    }
+                    break;
             }
         }
     }
     void PlayRandomCardFromHand()
     {
         // play a random card and reset players energy from what was played
-        if (cardOwner.hand.Count > 0)
+        if (cardOwner.GetHandLength() > 0)
         {
-            var r = UnityEngine.Random.Range(0, cardOwner.hand.Count);
+            var r = UnityEngine.Random.Range(0, cardOwner.GetHandLength());
             int energySave = cardOwner.GetEnergy();
-            cardOwner.hand[r].PlayCard();
+            cardOwner.GetCardsInHand()[r].PlayCard();
             cardOwner.SetEnergy(energySave);
         }
     }
 
     void DiscardRandomCardFromHand()
     {
-        if (cardOwner.hand.Count > 0)
+        if (cardOwner.GetHandLength() > 0)
         {
-            var r = UnityEngine.Random.Range(0, cardOwner.hand.Count);
-            Card cardToDiscard = cardOwner.hand[r];
+            var r = UnityEngine.Random.Range(0, cardOwner.GetHandLength());
+            Card cardToDiscard = cardOwner.GetCardsInHand()[r];
             cardToDiscard.gameObject.SetActive(false);
             cardToDiscard.isPlayable = false;
             cardOwner.discardPile.Add(cardToDiscard);
-            cardOwner.hand.Remove(cardToDiscard);
+            int index = cardOwner.hand.IndexOf(cardToDiscard);
+            cardOwner.hand[index] = null;
         }
     }
 

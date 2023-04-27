@@ -26,7 +26,11 @@ public class NPCController : PlayerController
     void Start()
     {
         ChangeEnergy(baseEnergy);
-
+        handSize = 5;
+        for (int i = 0; i < handSize; i++)
+        {
+            hand.Add(null);
+        }
     }
 
     // Update is called once per frame
@@ -43,7 +47,7 @@ public class NPCController : PlayerController
 
         if (cards.Count > 0) { 
         //if no hand isnt full then use all energy filling hand
-            if (hand.Count + drawPile.Count + discardPile.Count < 15)
+            if (GetHandLength() + drawPile.Count + discardPile.Count < 15)
             {
                 int i = 0;
 
@@ -74,17 +78,18 @@ public class NPCController : PlayerController
         }
         //should play some cards as well as bid in middle
 
-        if(hand.Count>0 && GetEnergy()>0)
+        if(GetHandLength()>0 && GetEnergy()>0)
         {
             //this method should really be trying to play first random card, if can then play it, if not remove it from options
             int i = 0;
             
-            while(GetEnergy() > 0 && i<10 && hand.Count> 0)
+            while(GetEnergy() > 0 && i<10 && GetHandLength() > 0)
             {
-                var num = UnityEngine.Random.Range(0, hand.Count);
-                if(hand[num].GetEnergyCost()<= GetEnergy())
+                List<Card> handCards = GetCardsInHand();
+                var num = UnityEngine.Random.Range(0, GetHandLength());
+                if(handCards[num].GetEnergyCost()<= GetEnergy())
                 {
-                    hand[num].PlayCard();
+                    handCards[num].PlayCard();
                 }
                 else
                 {
@@ -94,6 +99,8 @@ public class NPCController : PlayerController
         }
     }
 
+
+    
 
 
 }

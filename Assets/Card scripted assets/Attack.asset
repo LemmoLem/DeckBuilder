@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyCost: -1
   statValue: -1
-  cardEffect: 30
+  cardEffect: 300
   cardArt: {fileID: 21300000, guid: d28f06ab87745684888e52c14eca750d, type: 3}
   cardColor: {r: 1, g: 0, b: 0, a: 1}
   addModule: {fileID: 0}
+  isInvertTargert: 0

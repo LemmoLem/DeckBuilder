@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyCost: 3
   statValue: 1
-  cardEffect: 6
+  cardEffect: 60
   cardArt: {fileID: 21300000, guid: cba8785f736695a4396b58802814e8e9, type: 3}
   cardColor: {r: 0.93333334, g: 0, b: 1, a: 1}
   addModule: {fileID: 0}
