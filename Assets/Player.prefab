@@ -220,7 +220,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9130146100321678205}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -250,8 +250,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 755332651
-  m_SortingLayer: 3
+  m_SortingLayerID: 1634295779
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -282,10 +282,11 @@ MonoBehaviour:
   shields: 0
   shieldBonus: 0
   hand: []
-  handSize: 0
   drawPile: []
   discardPile: []
   playerArea: {fileID: 7204488874808811404}
+  gameManager: {fileID: 0}
+  maxHandSize: 0
 --- !u!1001 &9171406980401300239
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -295,7 +296,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
       propertyPath: slots.Array.size
-      value: 5
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
       propertyPath: slots.Array.data[0]
@@ -317,6 +318,30 @@ PrefabInstance:
       propertyPath: slots.Array.data[4]
       value: 
       objectReference: {fileID: 9171406978792392103}
+    - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+      propertyPath: slots.Array.data[5]
+      value: 
+      objectReference: {fileID: 1220807991981554820}
+    - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+      propertyPath: slots.Array.data[6]
+      value: 
+      objectReference: {fileID: 45364759100366550}
+    - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+      propertyPath: slots.Array.data[7]
+      value: 
+      objectReference: {fileID: 2890544405984523}
+    - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+      propertyPath: slots.Array.data[8]
+      value: 
+      objectReference: {fileID: 6585303538893466682}
+    - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+      propertyPath: slots.Array.data[9]
+      value: 
+      objectReference: {fileID: 9207083131539241840}
+    - target: {fileID: 2070563444970495107, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+      propertyPath: slots.Array.data[10]
+      value: 
+      objectReference: {fileID: 4152524326392264765}
     - target: {fileID: 6831094437563219071, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
       propertyPath: m_Name
       value: Player Area
@@ -406,5 +431,35 @@ Transform:
 --- !u!4 &9171406978792392103 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1613629096, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+  m_PrefabInstance: {fileID: 9171406980401300239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1220807991981554820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8049705397698641803, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+  m_PrefabInstance: {fileID: 9171406980401300239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &45364759100366550 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9216134005397921241, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+  m_PrefabInstance: {fileID: 9171406980401300239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2890544405984523 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9173030764468319748, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+  m_PrefabInstance: {fileID: 9171406980401300239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6585303538893466682 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2604435886926311221, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+  m_PrefabInstance: {fileID: 9171406980401300239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9207083131539241840 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 36384342023911551, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
+  m_PrefabInstance: {fileID: 9171406980401300239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4152524326392264765 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5109290697767058226, guid: 21d9a374d4e456543ab87a826c51525a, type: 3}
   m_PrefabInstance: {fileID: 9171406980401300239}
   m_PrefabAsset: {fileID: 0}

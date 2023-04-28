@@ -396,9 +396,23 @@ public class Card : MonoBehaviour
                         cardOwner.DrawACard();
                     }
                     break;
+                case CardData.CardEffect.HandSizeUp:
+                    for (int j = 0; j < carddatas[i].statValue; j++)
+                    {
+                        if (carddatas[i].isInvertTargert == false)
+                        {
+                            cardOwner.ChangeHandSize(1);
+                        }
+                        else if (carddatas[i].isInvertTargert == true)
+                        {
+                            cardOpponent.ChangeHandSize(1);
+                        }
+                    }
+                    break;
             }
         }
     }
+    
     void PlayRandomCardFromHand()
     {
         // play a random card and reset players energy from what was played

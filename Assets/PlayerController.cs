@@ -13,11 +13,12 @@ public class PlayerController : MonoBehaviour
     int baseShields;
     public int shieldBonus;
     public List<Card> hand = new List<Card>();
-    public int handSize;
     public List<Card> drawPile = new List<Card>();
     public List<Card> discardPile = new List<Card>();
     public PlayerArea playerArea;
     public GameManager gameManager;
+    int handSize;
+    public int maxHandSize;
     int damageNow, damageNext, shieldBreakNow, shieldBreakNext, unblockNow, unblockNext, shieldNext, shieldNow;
     List<int> shieldNextTurns = new List<int>{0,0,0,0,0};
     List<int> damageNextTurns = new List<int>{0,0,0,0,0};
@@ -30,7 +31,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         energy = baseEnergy;
-        handSize = 5;
+        handSize = 6;
         strength = 0;
         shieldBonus = 0;
         damageNext = 0;
@@ -41,7 +42,8 @@ public class PlayerController : MonoBehaviour
         unblockNext = 0;
         shieldNow = 0;
         shieldNext = 0;
-        for (int i = 0; i < handSize; i++)
+        maxHandSize = playerArea.slots.Length;
+        for (int i = 0; i < maxHandSize; i++)
         {
             hand.Add(null);
         }
@@ -51,6 +53,25 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void SetHandSize(int amount)
+    {
+        handSize = amount;
+    }
+
+    public void ChangeHandSize(int amount)
+    {
+        // so maybe change hand size minimum idk
+        handSize += amount;
+        if (handSize < 3)
+        {
+            handSize = 3;
+        }
+        if (handSize > maxHandSize)
+        {
+            handSize = maxHandSize;
+        }
     }
 
     public int GetHandLength()
@@ -290,7 +311,7 @@ public class PlayerController : MonoBehaviour
         //so when a card is played it needs to be removed from the players hand and added into their discard pile
         List<Card> addToDiscard = new List<Card>();
         bool isAdded = false;
-        for (int i = 0; i < handSize; i++)
+        for (int i = 0; i < maxHandSize; i++)
         {
             if (hand[i] != null)
             {

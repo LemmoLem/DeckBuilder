@@ -31,7 +31,8 @@ public class GameManager : MonoBehaviour
     public Card cardPrefab;
     public TextMeshProUGUI gameOverText;
     public List<CardData> cardDatas = new List<CardData>();
-    private int turnCount =1;
+    private int turnCount = 1;
+    public List<CardData> initialList = new List<CardData>();
     // Start is called before the first frame update
 
     //get rid of player1 and player 2
@@ -48,7 +49,8 @@ public class GameManager : MonoBehaviour
         riverCards.Add(top);
         riverCards.Add(middle);
         riverCards.Add(bottom);
-        AddNewCardsToDrawPile(25);
+        FillDrawPileFromCards(25, initialList, 0, 2);
+        //
         SpawnRiver();
         thePlayer.SetOpponent(npc);
         npc.SetOpponent(thePlayer);
@@ -147,6 +149,35 @@ public class GameManager : MonoBehaviour
             amount = amount - 1;
         }
     }
+
+    void GameCardRamp()
+    {
+        // so initially should spawn a few cards
+        // this can be done by passing in a list of cards
+      
+        // 
+    }
+    void FillDrawPileFromCards(int amountOfCards, List<CardData> datas, int MinAmountOfModules, int MaxAmountOfModules)
+    {
+        while (amountOfCards != 0)
+        {
+            Card card = Instantiate(cardPrefab);
+            int num = UnityEngine.Random.Range(0, datas.Count);
+            //Debug.Log(num);
+            card.AddCardData(datas[num]);
+            // so min is actually like above zero
+            int num2 = UnityEngine.Random.Range(MinAmountOfModules, MaxAmountOfModules);
+            for (int i = 0; i < num2; i++)
+            {
+                int num3 = UnityEngine.Random.Range(0, datas.Count);
+                card.AddCardData(datas[num3]);
+            }
+            riverDrawPile.Add(card);
+            card.gameObject.SetActive(false);
+            amountOfCards--;
+        }
+    }
+
     void FillDrawPile()
     {
         for (int i = 0; i < riverLength/6; i++)

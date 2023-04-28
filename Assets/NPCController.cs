@@ -26,8 +26,9 @@ public class NPCController : PlayerController
     void Start()
     {
         ChangeEnergy(baseEnergy);
-        handSize = 5;
-        for (int i = 0; i < handSize; i++)
+        SetHandSize(6);
+        maxHandSize = playerArea.slots.Length;
+        for (int i = 0; i < maxHandSize; i++)
         {
             hand.Add(null);
         }
