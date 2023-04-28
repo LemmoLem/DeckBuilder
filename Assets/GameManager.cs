@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     public List<CardData> cardDatas = new List<CardData>();
     private int turnCount = 1;
     public List<CardData> initialList = new List<CardData>();
+    public List<CardData> midList = new List<CardData>();
+    public List<CardData> EndList = new List<CardData>();
+    List<CardData> modules = new List<CardData>();
     // Start is called before the first frame update
 
     //get rid of player1 and player 2
@@ -49,7 +52,7 @@ public class GameManager : MonoBehaviour
         riverCards.Add(top);
         riverCards.Add(middle);
         riverCards.Add(bottom);
-        FillDrawPileFromCards(25, initialList, 0, 2);
+        FillDrawPileFromCards(25, initialList, 1, 3);
         //
         SpawnRiver();
         thePlayer.SetOpponent(npc);
@@ -154,19 +157,34 @@ public class GameManager : MonoBehaviour
     {
         // so initially should spawn a few cards
         // this can be done by passing in a list of cards
-      
-        // 
+        if (turnCount == 1)
+        {
+            // maybe issue that this is not copied
+            modules = initialList;
+            FillDrawPileFromCards(25, modules, 1, 3);
+        }
+        // so then for next turns should start adding modules n that
+        if (turnCount > 3)
+        {
+            CardData temp = midList[UnityEngine.Random.Range(0, midList.Count)];
+            midList.Remove(temp);
+            modules.Add(temp);
+            FillDrawPileFromCards(3, modules, 1, 3);
+
+        }
+        // then after initial cards, spawn new cards which half include new modules - baso add two modules each time
+        // then keep doing it till run out
+        // then add beefier modules n keep doing that
     }
-    void FillDrawPileFromCards(int amountOfCards, List<CardData> datas, int MinAmountOfModules, int MaxAmountOfModules)
+    void FillDrawPileFromCards(int amountOfCards, List<CardData> datas, int MinAmountOfModulesIncl, int MaxAmountOfModulesExcl)
     {
         while (amountOfCards != 0)
         {
             Card card = Instantiate(cardPrefab);
             int num = UnityEngine.Random.Range(0, datas.Count);
             //Debug.Log(num);
-            card.AddCardData(datas[num]);
             // so min is actually like above zero
-            int num2 = UnityEngine.Random.Range(MinAmountOfModules, MaxAmountOfModules);
+            int num2 = UnityEngine.Random.Range(MinAmountOfModulesIncl, MaxAmountOfModulesExcl);
             for (int i = 0; i < num2; i++)
             {
                 int num3 = UnityEngine.Random.Range(0, datas.Count);
