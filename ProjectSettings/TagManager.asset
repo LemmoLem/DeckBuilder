@@ -56,3 +56,6 @@ TagManager:
   - name: Card Modules
     uniqueID: 200224813
     locked: 0
+  - name: Text on card modulles
+    uniqueID: 2682897669
+    locked: 0

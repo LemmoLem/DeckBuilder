@@ -1082,7 +1082,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1068505581747304574, guid: 6e0794860def6524eb6de642a62d179a, type: 3}
       propertyPath: initialList.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1068505581747304574, guid: 6e0794860def6524eb6de642a62d179a, type: 3}
       propertyPath: cardDatas.Array.data[0]
@@ -1204,6 +1204,10 @@ PrefabInstance:
       propertyPath: initialList.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: 5761b88cbafe25a4ba8cbe6b1fe37a65, type: 2}
+    - target: {fileID: 1068505581747304574, guid: 6e0794860def6524eb6de642a62d179a, type: 3}
+      propertyPath: initialList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c26e883051ff1a45a3d2b4dac4e2fe1, type: 2}
     - target: {fileID: 1068505581747304575, guid: 6e0794860def6524eb6de642a62d179a, type: 3}
       propertyPath: m_Name
       value: GameManager

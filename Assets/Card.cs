@@ -231,7 +231,15 @@ public class Card : MonoBehaviour
         {
             moduleSlots[i].GetComponent<SpriteRenderer>().sprite = carddatas[i].cardArt;
             moduleSlots[i].GetComponentInChildren<TextMeshProUGUI>().text = carddatas[i].statValue.ToString();
-
+            // flip the sprite if its an addmodule carddata
+            if (carddatas[i].cardEffect == CardData.CardEffect.AddModule)
+            {
+                moduleSlots[i].GetComponent<SpriteRenderer>().flipY = true;
+            }
+            else
+            {
+                moduleSlots[i].GetComponent<SpriteRenderer>().flipY = false;
+            }
         }
     }
 

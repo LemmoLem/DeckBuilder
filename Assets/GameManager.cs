@@ -39,16 +39,13 @@ public class GameManager : MonoBehaviour
     List<CardData> modules = new List<CardData>();
     // Start is called before the first frame update
 
-    //get rid of player1 and player 2
-    //change turn, next turn, get whos turn all that. as turns will be at the same time
-    //card is what uses whos turn and that will no longer be a thing
-    //turns should be comprised of player choosing a set of card to get and or play
-    //
    
 
 
     void Start()
     {
+        List<CardData> newDatas = BuffScriptedAssets(initialList);
+        initialList.AddRange(newDatas);
         // river cards is a list of lists. cards are added into top, middle and bottom by accesing that
         riverCards.Add(top);
         riverCards.Add(middle);
@@ -245,6 +242,42 @@ public class GameManager : MonoBehaviour
         // then keep doing it till run out
         // then add beefier modules n keep doing that
     }
+
+
+    List<CardData> BuffScriptedAssets(List<CardData> weakestDatas)
+    {
+        // so this takes from modules and then mulitplies the energy cost and the statvalue
+        // if energy is 0 then ignore multiplying that
+        List<CardData> buffedList = new List<CardData>();
+        foreach (CardData data in weakestDatas)
+        {
+            var newData = Instantiate(data);
+            if (data.energyCost != 0)
+            {
+                newData.energyCost *= 2;
+            }
+            newData.statValue = newData.statValue * 2 + 1;
+            buffedList.Add(newData);
+        }
+
+        return buffedList;
+    }
+
+    List<CardData> AddNewAddModulesFromBase(CardData addModuleCardData) 
+    {
+        List<CardData> newModules = new List<CardData>();
+        foreach(CardData data in modules)
+        {
+            if (data.cardEffect != CardData.CardEffect.AddModule)
+            {
+                var newData = Instantiate(addModuleCardData);
+                newData.addModule = data;
+
+            }
+        }
+        return newModules;
+    }
+
     void FillDrawPileFromCards(int amountOfCards, List<CardData> datas, int MinAmountOfModulesIncl, int MaxAmountOfModulesExcl)
     {
         while (amountOfCards != 0)
