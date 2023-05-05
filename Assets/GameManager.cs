@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     private int turnCount = 1;
     public List<CardData> initialList = new List<CardData>();
     public List<CardData> midList = new List<CardData>();
+    public List<CardData> midToEndList = new List<CardData>();
     public List<CardData> EndList = new List<CardData>();
     List<CardData> modules = new List<CardData>();
     // Start is called before the first frame update
@@ -154,9 +155,12 @@ public class GameManager : MonoBehaviour
     }
 
     void GameCardRamp()
-    {
+    { 
+        // SO CALL THIS AT START OF END TURN OR SMTH. and have it so adds new module every few turns (use modulus)
+        // and then use > 5 or > 10 to determine how many modules can be on a card
+
         // so initially should spawn a few cards
-        // this can be done by passing in a list of cards
+        // modules is what add module to
         if (turnCount == 1)
         {
             // maybe issue that this is not copied
@@ -164,14 +168,79 @@ public class GameManager : MonoBehaviour
             FillDrawPileFromCards(25, modules, 1, 3);
         }
         // so then for next turns should start adding modules n that
-        if (turnCount > 3)
+        if (turnCount > 1 && (turnCount % 2 == 0))
         {
-            CardData temp = midList[UnityEngine.Random.Range(0, midList.Count)];
-            midList.Remove(temp);
-            modules.Add(temp);
-            FillDrawPileFromCards(3, modules, 1, 3);
-
+            if (midList.Count > 0)
+            {
+                CardData temp = midList[UnityEngine.Random.Range(0, midList.Count)];
+                midList.Remove(temp);
+                modules.Add(temp);
+                FillDrawPileFromCards(3, modules, 1, 3);
+            }
+            else
+            {
+                FillDrawPileFromCards(3, modules, 1, 3);
+            }
         }
+        else if (turnCount > 10 && (turnCount % 2 == 0))
+        {
+            if (midToEndList.Count > 0)
+            {
+                CardData temp = midToEndList[UnityEngine.Random.Range(0, midToEndList.Count)];
+                midToEndList.Remove(temp);
+                modules.Add(temp);
+                FillDrawPileFromCards(3, modules, 1, 5);
+            }
+            else
+            {
+                FillDrawPileFromCards(3, modules, 1, 5);
+            }
+        }
+        else if (turnCount > 20 && (turnCount % 2 == 0))
+        {
+            if (EndList.Count > 0)
+            {
+                CardData temp = EndList[UnityEngine.Random.Range(0, EndList.Count)];
+                EndList.Remove(temp);
+                modules.Add(temp);
+                FillDrawPileFromCards(3, modules, 1, 7);
+            }
+            else
+            {
+                FillDrawPileFromCards(3, modules, 1, 7);
+            }
+        }
+
+        else if (turnCount > 30 && (turnCount % 2 == 0))
+        {
+            if (EndList.Count > 0)
+            {
+                CardData temp = EndList[UnityEngine.Random.Range(0, EndList.Count)];
+                EndList.Remove(temp);
+                modules.Add(temp);
+                FillDrawPileFromCards(3, modules, 3, 9);
+            }
+            else
+            {
+                FillDrawPileFromCards(3, modules, 3, 9);
+            }
+        }
+
+        else if (turnCount > 40 && (turnCount % 2 == 0))
+        {
+            if (EndList.Count > 0)
+            {
+                CardData temp = EndList[UnityEngine.Random.Range(0, EndList.Count)];
+                EndList.Remove(temp);
+                modules.Add(temp);
+                FillDrawPileFromCards(3, modules, 5, 9);
+            }
+            else
+            {
+                FillDrawPileFromCards(3, modules, 5, 9);
+            }
+        }
+
         // then after initial cards, spawn new cards which half include new modules - baso add two modules each time
         // then keep doing it till run out
         // then add beefier modules n keep doing that
@@ -251,10 +320,9 @@ public class GameManager : MonoBehaviour
         thePlayer.EndTurn();
         npc.EndTurn();
         turnCount++;
-        if (turnCount%5 == 0)
+        if (turnCount%3 == 0)
         {
             MoveCardsRight();
-            AddNewCardsToDrawPile(5);
             SpawnColumnOfCards();
         }
         thePlayer.StartTurn();
@@ -268,10 +336,13 @@ public class GameManager : MonoBehaviour
         {
             if (riverCards[j][0] == null)
             {
-                riverDrawPile[0].transform.position = river.GetRiverSlots()[j][0].position;
-                riverDrawPile[0].gameObject.SetActive(true);
-                riverCards[j][0] = riverDrawPile[0];
-                riverDrawPile.RemoveAt(0);
+                if (riverDrawPile.Count > 0)
+                {
+                    riverDrawPile[0].transform.position = river.GetRiverSlots()[j][0].position;
+                    riverDrawPile[0].gameObject.SetActive(true);
+                    riverCards[j][0] = riverDrawPile[0];
+                    riverDrawPile.RemoveAt(0);
+                }
             }
         }
     }

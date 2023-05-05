@@ -203,10 +203,35 @@ public class Card : MonoBehaviour
         }
         SpriteRenderer sprite = gameObject.GetComponent<SpriteRenderer>();
         sprite.color = data.cardColor;
+        //https://answers.unity.com/questions/1804152/how-do-i-mix-multiple-colors-into-one-color.html
+        // modified from this
+        float totalRed = 0f;
+        float totalGreen = 0f;
+        float totalBlue = 0f;
+
+        List<Color> colours = new List<Color>();
+        foreach (CardData colourdata in carddatas)
+        {
+            colours.Add(colourdata.cardColor);
+        }
+
+        foreach (Color colour in colours)
+        {
+            totalRed += colour.r;
+            totalGreen += colour.g;
+            totalBlue += colour.b;
+        }
+
+        float numColours = colours.Count;
+        sprite.color = new Color(totalRed / numColours, totalGreen / numColours, totalBlue / numColours);
+        
+
         cardModuleSprite.Add(data.cardArt);
         for (int i = 0; i < carddatas.Count; i++)
         {
             moduleSlots[i].GetComponent<SpriteRenderer>().sprite = carddatas[i].cardArt;
+            moduleSlots[i].GetComponentInChildren<TextMeshProUGUI>().text = carddatas[i].statValue.ToString();
+
         }
     }
 
