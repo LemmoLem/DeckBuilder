@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
+
 
 /*
     
@@ -211,6 +213,7 @@ public class GameManager : MonoBehaviour
             modules.Add(temp);
         }
 
+
         if (turnCount > 1 && turnCount < 5 && riverDrawPile.Count < 6)
         {
             FillDrawPileFromCards(3, modules, 1, 3);
@@ -309,18 +312,17 @@ public class GameManager : MonoBehaviour
 
     void DisplayText()
     {
-        thePlayerText.text = "Draw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: "
+        thePlayerText.text = "Player stats: \nDraw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: "
             + thePlayer.GetDiscardPileLength() + "\nHealth: " + thePlayer.GetHealth() + "\nEnergy: " + thePlayer.GetEnergy()
-            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " + thePlayer.GetShield5String() + "\nDamage5: " + thePlayer.GetDamage5String();
+            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " + thePlayer.GetShield5String() + "\nDamage5: " + thePlayer.GetDamage5String() 
+            + "\nDamage now: " + thePlayer.GetDamageNow() + "\nShield break now: " + thePlayer.GetShieldBreakNow() + "\nUnblock now: " + thePlayer.GetUnblockNow();
 
 
-        npcText.text = "Draw Pile: " + npc.GetDrawPileLength() + "\nDiscard Pile: "
+        npcText.text = "AI stats: \nDraw Pile:  " + npc.GetDrawPileLength() + "\nDiscard Pile: "
                     + npc.GetDiscardPileLength() + "\nHealth: " + npc.GetHealth() + "\nEnergy: " + npc.GetEnergy()
-                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength() + "\nShield5: " + npc.GetShield5String() + "\nDamage5: " + npc.GetDamage5String();
-        if (thePlayer.GetHealth() < 0 || npc.GetHealth() < 0)
-        {
-            gameOverText.text = "GAME OVER";
-        }
+                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength() + "\nShield5: " + npc.GetShield5String() + "\nDamage5: " + npc.GetDamage5String()
+                    + "\nDamage now: " + npc.GetDamageNow() + "\nShield break now: " + npc.GetShieldBreakNow() + "\nUnblock now: " + npc.GetUnblockNow();
+
     }
 
     public PlayerController GetThePlayer()
@@ -357,7 +359,14 @@ public class GameManager : MonoBehaviour
         }
         thePlayer.StartTurn();
         npc.StartTurn();
-        
+        if (thePlayer.GetHealth() < 1)
+        {
+            SceneManager.LoadScene("Loss Screen");
+        }
+        else if(npc.GetHealth() < 1)
+        {
+            SceneManager.LoadScene("Win screen");
+        }
     }
 
     void SpawnColumnOfCards()

@@ -406,7 +406,7 @@ public class Card : MonoBehaviour
                 case CardData.CardEffect.AddModule:
                     for (int j = 0; j < carddatas[i].statValue; j++)
                     {
-                        AddModuleToLeftestCardInHand(carddatas[i].addModule);
+                        AddModuleToRandomCard(carddatas[i].addModule);
                     }
                    break;
                 case CardData.CardEffect.Discard:
@@ -472,17 +472,23 @@ public class Card : MonoBehaviour
         }
     }
 
-    void AddModuleToLeftestCardInHand(CardData data)
+    void AddModuleToRandomCard(CardData data)
     {
-        bool isAdded = false;
+        List<Card> cards = new List<Card>();
         foreach (Card card in cardOwner.GetCardsInHand())
         {
-            if (card.carddatas.Count < 9 & isAdded == false)
+            if (card.carddatas.Count < 9)
             {
-                card.AddCardData(data);
-                isAdded = true;
+                cards.Add(card);
             }
         }
+        if (cards.Count > 0)
+        {
+            var r = UnityEngine.Random.Range(0, cards.Count);
+            cards[r].AddCardData(data);
+        }
+
+        
     }
 
     // so limit use the card still gets played but afterwards its removed from discard pile :-o

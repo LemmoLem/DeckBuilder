@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Card Battle.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Loss Screen.unity
+    guid: 05097b2531905be4abb0b402f5cd949c
+  - enabled: 1
+    path: Assets/Scenes/Win screen.unity
+    guid: 936afd5191b86e041a0969295a3aa1c3
   m_configObjects: {}

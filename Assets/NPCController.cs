@@ -40,28 +40,65 @@ public class NPCController : PlayerController
         
     }
 
+    List<Card> GetBidableCards()
+    {
+        List<Card> cards = gameManager.GetRiverCards();
+
+        List<Card> bidableCards = new List<Card>();
+        if (cards.Count > 0)
+        {
+            foreach (Card card in cards)
+            {
+                if (card.GetEnergyCost() <= GetEnergy())
+                {
+                    bidableCards.Add(card);
+                }
+            }
+        }
+        return bidableCards;
+    }
+
+    List<Card> GetPlayable()
+    {
+        List<Card> cards = GetCardsInHand();
+
+        List<Card> playableCards = new List<Card>();
+        if (cards.Count > 0)
+        {
+            foreach (Card card in cards)
+            {
+                if (card.GetEnergyCost() <= GetEnergy())
+                {
+                    playableCards.Add(card);
+                }
+            }
+        }
+        return playableCards;
+    }
+
     public void PlayTurn()
     {
         //so on an npc turn they want to play cards and bid for cards
-        List<Card> cards = gameManager.GetRiverCards();
+        //make playable cards
+        List<Card> bidableCards = GetBidableCards();
+        
 
-
-        if (cards.Count > 0) { 
+        if (bidableCards.Count > 0) { 
         //if no hand isnt full then use all energy filling hand
-            if (GetHandLength() + drawPile.Count + discardPile.Count < 15)
+            if (GetHandLength() + drawPile.Count + discardPile.Count < 10)
             {
                 int i = 0;
 
                 //maybe have to do count -1
-                while (GetEnergy() > 0 && i < 10)
+                while (GetEnergy() > 0 && i < 10 && bidableCards.Count > 0)
                 {
-                    var num = UnityEngine.Random.Range(0, cards.Count);
-                    if (cards[num].GetNPCBid() == 0)
+                    var num = UnityEngine.Random.Range(0, bidableCards.Count);
+                    if (bidableCards[num].GetNPCBid() == 0)
                     {
-                        int energyCost = cards[num].GetEnergyCost();
+                        int energyCost = bidableCards[num].GetEnergyCost();
                         if (energyCost < GetEnergy())
                         {
-                            cards[num].ChangeNPCBid(energyCost);
+                            bidableCards[num].ChangeNPCBid(energyCost);
                         }
                         //so if the npc cant bid on cards they add to counter, just implementation for now
                         else
@@ -73,6 +110,34 @@ public class NPCController : PlayerController
                     {
                         i++;
                     }
+                    bidableCards = GetBidableCards();
+
+                }
+            }
+            else if ((GetHandLength() + drawPile.Count + discardPile.Count) >= 10 && (GetHandLength() + drawPile.Count + discardPile.Count) < 20)
+            {
+                int i = 0;
+                while (GetEnergy() > baseEnergy/2 && i < 10 && bidableCards.Count > 0)
+                {
+                    var num = UnityEngine.Random.Range(0, bidableCards.Count);
+                    if (bidableCards[num].GetNPCBid() == 0)
+                    {
+                        int energyCost = bidableCards[num].GetEnergyCost();
+                        if (energyCost < GetEnergy())
+                        {
+                            bidableCards[num].ChangeNPCBid(energyCost);
+                        }
+                        //so if the npc cant bid on cards they add to counter, just implementation for now
+                        else
+                        {
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        i++;
+                    }
+                    bidableCards = GetBidableCards();
 
                 }
             }
@@ -84,18 +149,15 @@ public class NPCController : PlayerController
             //this method should really be trying to play first random card, if can then play it, if not remove it from options
             int i = 0;
             
-            while(GetEnergy() > 0 && i<10 && GetHandLength() > 0)
+            while(GetEnergy() > 0 && i<10 && GetPlayable().Count > 0)
             {
-                List<Card> handCards = GetCardsInHand();
-                var num = UnityEngine.Random.Range(0, GetHandLength());
-                if(handCards[num].GetEnergyCost()<= GetEnergy())
+                List<Card> playableCards = GetPlayable();
+                if (playableCards.Count > 0)
                 {
-                    handCards[num].PlayCard();
+                    var num = UnityEngine.Random.Range(0, playableCards.Count);
+                    playableCards[num].PlayCard();
                 }
-                else
-                {
-                    i++;
-                }
+                i++;
             }
         }
     }

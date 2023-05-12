@@ -896,12 +896,32 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420031}
     - target: {fileID: 3958639322152510656, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
+      propertyPath: health
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3958639322152510656, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
+      propertyPath: baseEnergy
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3958639322152510656, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1851458870}
     - target: {fileID: 5858032008640897076, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
       propertyPath: m_Name
       value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 7235137705667276046, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 374.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 7235137705667276046, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -726.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7235137705667276046, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 213.5
       objectReference: {fileID: 0}
     - target: {fileID: 7312162929316966263, guid: 4957a3961d85bd44faf985154212cc31, type: 3}
       propertyPath: m_RootOrder
@@ -1327,7 +1347,7 @@ PrefabInstance:
       objectReference: {fileID: 519420031}
     - target: {fileID: 1074299824, guid: a0f87ca01fc06014c82749076d109439, type: 3}
       propertyPath: health
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1074299824, guid: a0f87ca01fc06014c82749076d109439, type: 3}
       propertyPath: handSize
@@ -1342,12 +1362,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1116730595, guid: a0f87ca01fc06014c82749076d109439, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 372.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116730595, guid: a0f87ca01fc06014c82749076d109439, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -731
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 1116730595, guid: a0f87ca01fc06014c82749076d109439, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -63
+      value: 215.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116730596, guid: a0f87ca01fc06014c82749076d109439, type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1159355517370863168, guid: a0f87ca01fc06014c82749076d109439, type: 3}
       propertyPath: m_LocalPosition.y
