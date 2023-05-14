@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyCost: -1
   statValue: 1
+  cardName: Draw card
   cardEffect: 325
   cardArt: {fileID: 21300000, guid: 086c071eea5bab046b63d9a7f64e698e, type: 3}
   cardColor: {r: 0.8745098, g: 0.6132076, b: 0.49558187, a: 1}

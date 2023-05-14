@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
     List<CardData> modules = new List<CardData>();
     List<CardData> afterEndList = new List<CardData>();
     public CardData baseAddModuleCard;
+    public GameObject[] moduleSlots;
+    public Transform lastCardPlayedTransform;
+    Card copiedCard = null;
     // Start is called before the first frame update
 
 
@@ -454,6 +457,41 @@ public class GameManager : MonoBehaviour
         return cards;
     }
 
-   
+    public void DisplayCardDetails(Card card)
+    {
+        for (int i = 0; i < moduleSlots.Length; i++)
+        {
+            if (i < card.carddatas.Count)
+            {
+                moduleSlots[i].SetActive(true);
+                moduleSlots[i].GetComponent<SpriteRenderer>().sprite = card.carddatas[i].cardArt;
+                string desc = "";
+                if (card.carddatas[i].cardEffect == CardData.CardEffect.AddModule)
+                {
+                    desc = card.carddatas[i].cardName + "-" + card.carddatas[i].addModule.cardName + ": " + card.carddatas[i].statValue;
+                }
+                else
+                {
+                    desc = card.carddatas[i].cardName + ": " + card.carddatas[i].statValue + "\n";
+                }
+                moduleSlots[i].GetComponentInChildren<TextMeshProUGUI>().text = desc;
+            }
+            else
+            {
+                moduleSlots[i].SetActive(false);
+            }
+        }
+    }
 
+    public void CopyAndShowLastPlayedCard(Card card)
+    {
+        if (copiedCard != null)
+        {
+            Destroy(copiedCard.gameObject);
+        }
+        copiedCard = Instantiate(card);
+        copiedCard.SetIsplayable(false);
+        copiedCard.gameObject.SetActive(true);
+        copiedCard.transform.position = lastCardPlayedTransform.position;
+    }
 }

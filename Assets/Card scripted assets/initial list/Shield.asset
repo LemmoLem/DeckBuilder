@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyCost: -1
   statValue: 1
+  cardName: Shield
   cardEffect: 50
   cardArt: {fileID: 21300000, guid: d3f0a68428ff5d04fb6b49baeda0b28e, type: 3}
   cardColor: {r: 0, g: 0.054670263, b: 0.6792453, a: 1}

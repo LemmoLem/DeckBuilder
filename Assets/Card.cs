@@ -22,6 +22,7 @@ public class Card : MonoBehaviour
     int life = 0;
     public GameObject[] moduleSlots;
     List<Sprite> cardModuleSprite = new List<Sprite>();
+    public TextMeshProUGUI cardDescription;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +45,8 @@ public class Card : MonoBehaviour
                 life = life + data.statValue;
             }
         }
+        cardDescription.text = "";
+        cardDescription.enabled = false;
     }
 
     // Update is called once per frame
@@ -73,6 +76,10 @@ public class Card : MonoBehaviour
         SetButtonUINotActive();
     }    
 
+    public void SetIsplayable(bool val)
+    {
+        isPlayable = val;
+    }
     
     public void ConfirmBid()
     {
@@ -243,6 +250,35 @@ public class Card : MonoBehaviour
         }
     }
 
+
+    void OnMouseOver()
+    {
+        cardDescription.enabled = true;
+        cardDescription.text = GetCardDescription();
+    }
+    void OnMouseExit()
+    {
+        cardDescription.text = "";
+        cardDescription.enabled = false;
+    }
+
+    string GetCardDescription()
+    {
+        string desc = "";
+        foreach (CardData data in carddatas)
+        {
+            if (data.cardEffect == CardData.CardEffect.AddModule)
+            {
+                desc += data.cardName + "-" + data.addModule.cardName + ": " + data.statValue + "\n";
+            }
+            else
+            {
+                desc += data.cardName + ": " + data.statValue + "\n";
+            }
+        }
+        return desc;
+    }
+
     void OnMouseDown()
     {
         //if card doesnt have an owner then whoever turn it is then go into that deck
@@ -261,7 +297,8 @@ public class Card : MonoBehaviour
                 {
                     if (cardOwner.GetEnergy() >= GetEnergyCost())
                     {
-
+                        cardDescription.text = "";
+                        cardDescription.enabled = false;
                         PlayCard();
 
                     }
@@ -299,7 +336,8 @@ public class Card : MonoBehaviour
         int index  = cardOwner.hand.IndexOf(this);
         cardOwner.hand[index] = null;
         isMinusLife = false;
-
+        //gameManager.DisplayCardDetails(this);
+        gameManager.CopyAndShowLastPlayedCard(this);
         for (int i =0; i < carddatas.Count; i++)
         {
             

@@ -42,6 +42,7 @@ public class CardData : ScriptableObject
         DrawCard = 325,
         HandSizeUp = 25
     }
+    public string cardName;
     public CardEffect cardEffect;
     public Sprite cardArt;
     private GameManager gameManager;

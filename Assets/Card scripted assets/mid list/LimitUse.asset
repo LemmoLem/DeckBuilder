@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyCost: 0
   statValue: 3
+  cardName: Use limit
   cardEffect: 350
   cardArt: {fileID: 21300000, guid: 74fbfe5c903d92d498d575d7df467e5b, type: 3}
   cardColor: {r: 0.2264151, g: 0.13755785, b: 0.1384551, a: 1}
