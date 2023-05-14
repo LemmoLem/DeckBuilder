@@ -325,7 +325,7 @@ public class PlayerController : MonoBehaviour
                 isAdded = true;
             }
         }
-        Debug.Log(addToDiscard.Count + "THIS IS HWO MUCH TO ADD TO DSICARD");
+        //Debug.Log(addToDiscard.Count + "THIS IS HWO MUCH TO ADD TO DSICARD");
         if (isAdded)
         {
             discardPile.AddRange(addToDiscard);

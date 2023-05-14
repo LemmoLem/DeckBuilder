@@ -69,7 +69,24 @@ public class NPCController : PlayerController
             {
                 if (card.GetEnergyCost() <= GetEnergy())
                 {
-                    playableCards.Add(card);
+                    int goodModules = 0;
+                    int badModules = 0;
+
+                    foreach (CardData data in card.carddatas)
+                    {
+                        if (data.isInvertTargert == true)
+                        {
+                            badModules++;
+                        }
+                        else
+                        {
+                            goodModules++;
+                        }
+                    }
+                    if (goodModules > badModules)
+                    {
+                        playableCards.Add(card);
+                    }
                 }
             }
         }

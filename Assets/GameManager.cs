@@ -180,40 +180,99 @@ public class GameManager : MonoBehaviour
             List<CardData> newEnds = BuffScriptedAssets(endList);
             afterEndList.AddRange(endList);
             afterEndList.AddRange(AddNewAddModulesFromBase(endList));
-            FillDrawPileFromCards(25, modules, 1, 3);
+            FillDrawPileFromCards(10, modules, 1, 3);
 
         }
         // so then for next turns should start adding modules n that
 
+        Debug.Log(initialList.Count);
+        Debug.Log(midList.Count);
+        Debug.Log(midToEndList.Count);
+        Debug.Log(endList.Count);
+        Debug.Log(afterEndList.Count);
+
+
+
+
+
         if (initialList.Count > 0)
         {
-            CardData temp = initialList[UnityEngine.Random.Range(0, initialList.Count)];
-            initialList.Remove(temp);
-            modules.Add(temp);
+            int num = UnityEngine.Random.Range(initialList.Count / 4, initialList.Count / 3);
+            if (num == 0)
+            {
+                num = 1;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                CardData temp = initialList[UnityEngine.Random.Range(0, initialList.Count)];
+                initialList.Remove(temp);
+                modules.Add(temp);
+            }
+            Debug.Log("initial list");
         }
         else if (midList.Count > 0)
         {
-            CardData temp = midList[UnityEngine.Random.Range(0, midList.Count)];
-            midList.Remove(temp);
-            modules.Add(temp);
+            int num = UnityEngine.Random.Range(midList.Count / 4, midList.Count / 3);
+            if (num == 0)
+            {
+                num = 1;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                CardData temp = midList[UnityEngine.Random.Range(0, midList.Count)];
+                midList.Remove(temp);
+                modules.Add(temp);
+            }
+            Debug.Log("mid list");
+
         }
         else if (midToEndList.Count > 0)
         {
-            CardData temp = midToEndList[UnityEngine.Random.Range(0, midToEndList.Count)];
-            midToEndList.Remove(temp);
-            modules.Add(temp);
+            int num = UnityEngine.Random.Range(midToEndList.Count / 4, midToEndList.Count / 3);
+            if (num == 0)
+            {
+                num = 1;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                CardData temp = midToEndList[UnityEngine.Random.Range(0, midToEndList.Count)];
+                midToEndList.Remove(temp);
+                modules.Add(temp);
+            }
+            Debug.Log("mid to end list");
+
         }
         else if (endList.Count > 0)
         {
-            CardData temp = endList[UnityEngine.Random.Range(0, endList.Count)];
-            endList.Remove(temp);
-            modules.Add(temp);
+            int num = UnityEngine.Random.Range(endList.Count / 4, endList.Count / 3);
+            if (num == 0)
+            {
+                num = 1;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                CardData temp = endList[UnityEngine.Random.Range(0, endList.Count)];
+                endList.Remove(temp);
+                modules.Add(temp);
+            }
+            Debug.Log("end list");
+
         }
         else if (afterEndList.Count > 0)
         {
-            CardData temp = afterEndList[UnityEngine.Random.Range(0, afterEndList.Count)];
-            afterEndList.Remove(temp);
-            modules.Add(temp);
+            int num = UnityEngine.Random.Range(afterEndList.Count / 4, afterEndList.Count / 3);
+            if (num == 0)
+            {
+                num = 1;
+            }
+            for (int i = 0; i < num; i++)
+            {
+                CardData temp = afterEndList[UnityEngine.Random.Range(0, afterEndList.Count)];
+                afterEndList.Remove(temp);
+                modules.Add(temp);
+            }
+            Debug.Log("after end list");
+
         }
 
 
@@ -317,14 +376,16 @@ public class GameManager : MonoBehaviour
     {
         thePlayerText.text = "Player stats: \nDraw Pile: " + thePlayer.GetDrawPileLength() + "\nDiscard Pile: "
             + thePlayer.GetDiscardPileLength() + "\nHealth: " + thePlayer.GetHealth() + "\nEnergy: " + thePlayer.GetEnergy()
-            + "\nShields: " + thePlayer.GetShields() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " + thePlayer.GetShield5String() + "\nDamage5: " + thePlayer.GetDamage5String() 
-            + "\nDamage now: " + thePlayer.GetDamageNow() + "\nShield break now: " + thePlayer.GetShieldBreakNow() + "\nUnblock now: " + thePlayer.GetUnblockNow();
+            + "\nShields: " + thePlayer.GetShields() + "\nShield bonus: " + thePlayer.GetShieldBonus() + "\nStrength: " + thePlayer.GetStrength() + "\nShield5: " 
+            + thePlayer.GetShield5String() + "\nDamage5: " + thePlayer.GetDamage5String() + "\nDamage now: " + thePlayer.GetDamageNow() +"\nShield break now: " 
+            + thePlayer.GetShieldBreakNow() + "\nUnblock now: " + thePlayer.GetUnblockNow();
 
 
         npcText.text = "AI stats: \nDraw Pile:  " + npc.GetDrawPileLength() + "\nDiscard Pile: "
-                    + npc.GetDiscardPileLength() + "\nHealth: " + npc.GetHealth() + "\nEnergy: " + npc.GetEnergy()
-                    + "\nShields: " + npc.GetShields() + "\nStrength: " + npc.GetStrength() + "\nShield5: " + npc.GetShield5String() + "\nDamage5: " + npc.GetDamage5String()
-                    + "\nDamage now: " + npc.GetDamageNow() + "\nShield break now: " + npc.GetShieldBreakNow() + "\nUnblock now: " + npc.GetUnblockNow();
+                + npc.GetDiscardPileLength() + "\nHealth: " + npc.GetHealth() + "\nEnergy: " + npc.GetEnergy()
+                + "\nShields: " + npc.GetShields() + "\nShield bonus: " + npc.GetShieldBonus() + "\nStrength: " + npc.GetStrength() + "\nShield5: " 
+                + npc.GetShield5String() + "\nDamage5: " + npc.GetDamage5String() + "\nDamage now: " + npc.GetDamageNow() + "\nShield break now: " 
+                + npc.GetShieldBreakNow() + "\nUnblock now: " + npc.GetUnblockNow();
 
     }
 
@@ -490,7 +551,7 @@ public class GameManager : MonoBehaviour
             Destroy(copiedCard.gameObject);
         }
         copiedCard = Instantiate(card);
-        copiedCard.SetIsplayable(false);
+        copiedCard.SetIsPlayed(true);
         copiedCard.gameObject.SetActive(true);
         copiedCard.transform.position = lastCardPlayedTransform.position;
     }

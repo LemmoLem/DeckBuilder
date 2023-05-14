@@ -23,11 +23,12 @@ public class Card : MonoBehaviour
     public GameObject[] moduleSlots;
     List<Sprite> cardModuleSprite = new List<Sprite>();
     public TextMeshProUGUI cardDescription;
+    bool isPlayed = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Im start");  
+        //Debug.Log("Im start");  
         isPlayable = true;
         gameManager = FindObjectOfType<GameManager>();
         SetButtonUINotActive();
@@ -76,9 +77,9 @@ public class Card : MonoBehaviour
         SetButtonUINotActive();
     }    
 
-    public void SetIsplayable(bool val)
+    public void SetIsPlayed(bool val)
     {
-        isPlayable = val;
+        isPlayed = val;
     }
     
     public void ConfirmBid()
@@ -283,32 +284,34 @@ public class Card : MonoBehaviour
     {
         //if card doesnt have an owner then whoever turn it is then go into that deck
         //else it should look at whos deck its in and attack other player
-
-        if (isPlayable)
+        if (isPlayed == false)
         {
-            if (isInDeck)
+            if (isPlayable)
             {
-                //this if should check if the player of the card and whether its their turn
-                //when cards become in deck they get a player so this works
-
-                //should check whether it is in the players hand
-                
-                if (cardOwner == thePlayer)
+                if (isInDeck)
                 {
-                    if (cardOwner.GetEnergy() >= GetEnergyCost())
+                    //this if should check if the player of the card and whether its their turn
+                    //when cards become in deck they get a player so this works
+
+                    //should check whether it is in the players hand
+
+                    if (cardOwner == thePlayer)
                     {
-                        cardDescription.text = "";
-                        cardDescription.enabled = false;
-                        PlayCard();
+                        if (cardOwner.GetEnergy() >= GetEnergyCost())
+                        {
+                            cardDescription.text = "";
+                            cardDescription.enabled = false;
+                            PlayCard();
 
+                        }
                     }
+
+
                 }
-
-
-            }
-            else
-            {
-                SetButtonUIActive();
+                else
+                {
+                    SetButtonUIActive();
+                }
             }
         }
         //if the card has a player check if the turn is over - will gotta change 
