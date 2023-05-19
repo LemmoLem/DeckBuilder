@@ -191,10 +191,6 @@ public class GameManager : MonoBehaviour
         Debug.Log(endList.Count);
         Debug.Log(afterEndList.Count);
 
-
-
-
-
         if (initialList.Count > 0)
         {
             int num = UnityEngine.Random.Range(initialList.Count / 4, initialList.Count / 3);
