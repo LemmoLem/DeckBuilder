@@ -341,7 +341,7 @@ public class Card : MonoBehaviour
         isMinusLife = false;
         //gameManager.DisplayCardDetails(this);
         gameManager.CopyAndShowLastPlayedCard(this);
-        for (int i =0; i < carddatas.Count; i++)
+        for (int i = 0; i < carddatas.Count; i++)
         {
             
             switch (carddatas[i].cardEffect)

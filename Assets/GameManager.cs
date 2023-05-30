@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public List<CardData> midList = new List<CardData>();
     public List<CardData> midToEndList = new List<CardData>();
     public List<CardData> endList = new List<CardData>();
-    List<CardData> modules = new List<CardData>();
+    public List<CardData> modules = new List<CardData>();
     List<CardData> afterEndList = new List<CardData>();
     public CardData baseAddModuleCard;
     public GameObject[] moduleSlots;
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
         {
             // so fill modules from initial list. then add buff versions of list to next list, and then add addmodules of that card
             modules.AddRange(initialList);
-            initialList.Clear();
+            //initialList.Clear();
             List<CardData> newInitials = BuffScriptedAssets(initialList);
             midList.AddRange(newInitials);
             midList.AddRange(AddNewAddModulesFromBase(initialList));
@@ -329,7 +329,6 @@ public class GameManager : MonoBehaviour
             {
                 var newData = Instantiate(baseAddModuleCard);
                 newData.addModule = data;
-
             }
         }
         return newModules;
@@ -411,6 +410,10 @@ public class GameManager : MonoBehaviour
         thePlayer.EndTurn();
         npc.EndTurn();
         GameCardRamp();
+        Debug.Log(modules.Count + "how many modules");
+        int sum = modules.Count + initialList.Count + midList.Count + midToEndList.Count + endList.Count + afterEndList.Count;
+        Debug.Log(sum + "how many modules all together");
+
         turnCount++;
         if (turnCount%2 == 0)
         {
